@@ -1,0 +1,180 @@
+# Copyright (c) 2014-2015 Arduino LLC.  All right reserved.
+# Copyright (c) 2016 Sandeep Mistry All right reserved.
+# Copyright (c) 2017 Adafruit Industries.  All right reserved.
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 2.1 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+menu.softdevice=Bootloader
+menu.debug=Debug
+menu.region=Region
+
+# ----------------------------------
+# WisBlock Core RAK4631 Board
+# ----------------------------------
+WisCoreRAK4631Board.name=WisBlock Core RAK4631 Board
+WisCoreRAK4631Board.bootloader.tool=bootburn
+
+# Upload
+WisCoreRAK4631Board.upload.tool=nrfutil
+WisCoreRAK4631Board.upload.protocol=nrfutil
+WisCoreRAK4631Board.upload.use_1200bps_touch=true
+WisCoreRAK4631Board.upload.wait_for_upload_port=true
+WisCoreRAK4631Board.upload.maximum_size=815104
+WisCoreRAK4631Board.upload.maximum_data_size=237568
+
+# Build
+WisCoreRAK4631Board.build.mcu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+WisCoreRAK4631Board.build.f_cpu=64000000
+WisCoreRAK4631Board.build.board=WisCore_RAK4631_Board
+WisCoreRAK4631Board.build.core=nRF5
+WisCoreRAK4631Board.build.variant=WisCore_RAK4631_Board
+WisCoreRAK4631Board.build.usb_manufacturer="RAKwireless"
+WisCoreRAK4631Board.build.usb_product="WisCore RAK4631 Board"
+WisCoreRAK4631Board.build.extra_flags=-DNRF52840_XXAA {build.flags.usb}
+WisCoreRAK4631Board.build.ldscript=nrf52840_s140_v6.ld
+WisCoreRAK4631Board.build.vid=0x239A
+WisCoreRAK4631Board.build.pid=0x8029
+
+# SoftDevice Menu
+WisCoreRAK4631Board.menu.softdevice.s140v6=0.3.2 SoftDevice s140 6.1.1
+WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_name=s140
+WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_version=6.1.1
+WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_fwid=0x00B6
+
+# Debug Menu
+WisCoreRAK4631Board.menu.debug.l0=Level 0 (Release)
+WisCoreRAK4631Board.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
+WisCoreRAK4631Board.menu.debug.l1=Level 1 (Error Message)
+WisCoreRAK4631Board.debug.l1.build.debug_flags=-DCFG_DEBUG=1
+WisCoreRAK4631Board.menu.debug.l2=Level 2 (Full Debug)
+WisCoreRAK4631Board.menu.debug.l2.build.debug_flags=-DCFG_DEBUG=2
+WisCoreRAK4631Board.menu.debug.l3=Level 3 (Segger SystemView)
+WisCoreRAK4631Board.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
+WisCoreRAK4631Board.menu.debug.l3.build.sysview_flags=-DCFG_SYSVIEW=1
+
+# Region Menu
+WisCoreRAK4631Board.menu.region.10=EU868
+WisCoreRAK4631Board.menu.region.10.build.region_flags=-DREGION_EU868
+WisCoreRAK4631Board.menu.region.11=US915
+WisCoreRAK4631Board.menu.region.11.build.region_flags=-DREGION_US915
+WisCoreRAK4631Board.menu.region.12=AU915
+WisCoreRAK4631Board.menu.region.12.build.region_flags=-DREGION_AU915
+WisCoreRAK4631Board.menu.region.13=KR920
+WisCoreRAK4631Board.menu.region.13.build.region_flags=-DREGION_KR920
+WisCoreRAK4631Board.menu.region.14=AS923
+WisCoreRAK4631Board.menu.region.14.build.region_flags=-DREGION_AS923
+WisCoreRAK4631Board.menu.region.15=IN865
+WisCoreRAK4631Board.menu.region.15.build.region_flags=-DREGION_IN865
+
+# ----------------------------------
+# WisBlock Core RAK4600 Board
+# ----------------------------------
+WisCoreRAK4600Board.name=WisBlock Core RAK4601 Board
+WisCoreRAK4600Board.bootloader.tool=bootburn
+
+# Upload
+WisCoreRAK4600Board.upload.tool=nrfutil
+WisCoreRAK4600Board.upload.protocol=nrfutil
+WisCoreRAK4600Board.upload.use_1200bps_touch=false
+WisCoreRAK4600Board.upload.wait_for_upload_port=false
+WisCoreRAK4600Board.upload.native_usb=false
+WisCoreRAK4600Board.upload.maximum_size=290816
+WisCoreRAK4600Board.upload.maximum_data_size=52224
+
+# Build
+WisCoreRAK4600Board.build.mcu=cortex-m4
+WisCoreRAK4600Board.build.f_cpu=64000000
+WisCoreRAK4600Board.build.board=NRF52832_FEATHER
+WisCoreRAK4600Board.build.core=nRF5
+WisCoreRAK4600Board.build.variant=WisCore_RAK4600_Board
+WisCoreRAK4600Board.build.usb_manufacturer="RAKwireless"
+WisCoreRAK4600Board.build.usb_product="WisCore RAK4600 Board"
+WisCoreRAK4600Board.build.extra_flags=-DNRF52832_XXAA -DNRF52
+WisCoreRAK4600Board.build.ldscript=nrf52832_s132_v6.ld
+
+# SofDevice Menu
+WisCoreRAK4600Board.menu.softdevice.s132v6=0.3.2 SoftDevice s132 6.1.1
+WisCoreRAK4600Board.menu.softdevice.s132v6.build.sd_name=s132
+WisCoreRAK4600Board.menu.softdevice.s132v6.build.sd_version=6.1.1
+WisCoreRAK4600Board.menu.softdevice.s132v6.build.sd_fwid=0x00B7
+
+# Debug Menu
+WisCoreRAK4600Board.menu.debug.l0=Level 0 (Release)
+WisCoreRAK4600Board.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
+WisCoreRAK4600Board.menu.debug.l1=Level 1 (Error Message)
+WisCoreRAK4600Board.menu.debug.l1.build.debug_flags=-DCFG_DEBUG=1
+WisCoreRAK4600Board.menu.debug.l2=Level 2 (Full Debug)
+WisCoreRAK4600Board.menu.debug.l2.build.debug_flags=-DCFG_DEBUG=2
+WisCoreRAK4600Board.menu.debug.l3=Level 3 (Segger SystemView)
+WisCoreRAK4600Board.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
+
+# Region Menu
+WisCoreRAK4600Board.menu.region.10=EU868
+WisCoreRAK4600Board.menu.region.10.build.region_flags=-DREGION_EU868
+WisCoreRAK4600Board.menu.region.11=US915
+WisCoreRAK4600Board.menu.region.11.build.region_flags=-DREGION_US915
+WisCoreRAK4600Board.menu.region.12=AU915
+WisCoreRAK4600Board.menu.region.12.build.region_flags=-DREGION_AU915
+WisCoreRAK4600Board.menu.region.13=KR920
+WisCoreRAK4600Board.menu.region.13.build.region_flags=-DREGION_KR920
+WisCoreRAK4600Board.menu.region.14=AS923
+WisCoreRAK4600Board.menu.region.14.build.region_flags=-DREGION_AS923
+WisCoreRAK4600Board.menu.region.15=IN865
+WisCoreRAK4600Board.menu.region.15.build.region_flags=-DREGION_IN865
+
+# ----------------------------------
+# WisTrio RAK5010 
+# ----------------------------------
+WisTrioRAK5010.name=WisTrio RAK5010 Board
+WisTrioRAK5010.bootloader.tool=bootburn
+
+# Upload
+WisTrioRAK5010.upload.tool=nrfutil
+WisTrioRAK5010.upload.protocol=nrfutil
+WisTrioRAK5010.upload.use_1200bps_touch=true
+WisTrioRAK5010.upload.wait_for_upload_port=true
+WisTrioRAK5010.upload.maximum_size=815104
+WisTrioRAK5010.upload.maximum_data_size=237568
+
+# Build
+WisTrioRAK5010.build.mcu=cortex-m4
+WisTrioRAK5010.build.f_cpu=64000000
+WisTrioRAK5010.build.board=WisTrioRAK5010
+WisTrioRAK5010.build.core=nRF5
+WisTrioRAK5010.build.variant=WisTrio_RAK5010_Board
+WisTrioRAK5010.build.usb_manufacturer="RAKwireless"
+WisTrioRAK5010.build.usb_product="WisTrio RAK5010 Board"
+WisTrioRAK5010.build.extra_flags=-DNRF52840_XXAA {build.flags.usb}
+WisTrioRAK5010.build.ldscript=nrf52840_s140_v6.ld
+WisTrioRAK5010.build.vid=0x239A
+WisTrioRAK5010.build.pid=0x8029
+
+# SofDevice Menu
+WisTrioRAK5010.menu.softdevice.s140v6=0.3.2 SoftDevice s140 6.1.1
+WisTrioRAK5010.menu.softdevice.s140v6.build.sd_name=s140
+WisTrioRAK5010.menu.softdevice.s140v6.build.sd_version=6.1.1
+WisTrioRAK5010.menu.softdevice.s140v6.build.sd_fwid=0x00B6
+
+# Debug Menu
+WisTrioRAK5010.menu.debug.l0=Level 0 (Release)
+WisTrioRAK5010.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
+WisTrioRAK5010.menu.debug.l1=Level 1 (Error Message)
+WisTrioRAK5010.menu.debug.l1.build.debug_flags=-DCFG_DEBUG=1
+WisTrioRAK5010.menu.debug.l2=Level 2 (Full Debug)
+WisTrioRAK5010.menu.debug.l2.build.debug_flags=-DCFG_DEBUG=2
+WisTrioRAK5010.menu.debug.l3=Level 3 (Segger SystemView)
+WisTrioRAK5010.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
+WisTrioRAK5010.menu.debug.l3.build.sysview_flags=-DCFG_SYSVIEW=1
+
