@@ -1,6 +1,6 @@
 <center><img src="/assets/RAK.png" alt="Modules" width="200"></center>  
 
-# Arduino Core for WisBlock Core RAK4631 and RAK4631 modules
+# Arduino Core for WisBlock Core RAK4631 and RAK4601 modules
 
 This repository contains the Arduino BSP for WisBlock Core modules:
 - [RAK4631](https://www.rakwireless.com)
