@@ -65,7 +65,7 @@ WisBlock is created with 4 modular blocks.
 #### WisBlock Core
 
 - WisBlock Core is the **data processing center** of WisBlock.
-- Some WisBlock Core modules also offer LoRaÂ®/LoRaWanÂ® communication and additional communication means like Bluetooth, Bluetooth Low Energy, or Wi-Fi.
+- Some WisBlock Core modules also offer LoRa®/LoRaWan® communication and additional communication means like Bluetooth, Bluetooth Low Energy, or Wi-Fi.
 
 #### WisBlock Sensor
 
@@ -192,7 +192,7 @@ $ nrfjprog --reset -f nrf52
 
 This BSP is based on [Adafruits nRF52 BSP](https://github.com/adafruit/Adafruit_nRF52_Arduino),    
 which is based on [Arduino-nRF5](https://github.com/sandeepmistry/arduino-nRF5) by Sandeep Mistry,    
-which in turn is based on the [Arduino SAMD Core](https://github.com/arduino/ArduinoCore-samd).    
+which in turn is based on the [Arduino SAMD Core](https://github.com/arduino/ArduinoCore-samd).
 
 The following libraries are used:
 

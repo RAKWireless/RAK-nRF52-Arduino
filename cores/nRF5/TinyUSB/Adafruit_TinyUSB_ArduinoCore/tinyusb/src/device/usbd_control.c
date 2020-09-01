@@ -32,6 +32,10 @@
 #include "device/usbd_pvt.h"
 #include "dcd.h"
 
+#if CFG_TUSB_DEBUG >= 2
+extern void usbd_driver_print_control_complete_name(bool (*control_complete) (uint8_t, tusb_control_request_t const *));
+#endif
+
 enum
 {
   EDPT_CTRL_OUT = 0x00,
@@ -58,12 +62,13 @@ static uint8_t _usbd_ctrl_buf[CFG_TUD_ENDPOINT0_SIZE];
 // Application API
 //--------------------------------------------------------------------+
 
+// Queue ZLP status transaction
 static inline bool _status_stage_xact(uint8_t rhport, tusb_control_request_t const * request)
 {
   // Opposite to endpoint in Data Phase
   uint8_t const ep_addr = request->bmRequestType_bit.direction ? EDPT_CTRL_OUT : EDPT_CTRL_IN;
 
-  TU_LOG2("  XFER Endpoint: 0x%02X, Bytes: %d\r\n", ep_addr, 0);
+  TU_LOG2("  Queue EP %02X with zlp Status\r\n", ep_addr);
 
   // status direction is reversed to one in the setup packet
   // Note: Status must always be DATA1
@@ -81,7 +86,7 @@ bool tud_control_status(uint8_t rhport, tusb_control_request_t const * request)
   return _status_stage_xact(rhport, request);
 }
 
-// Transfer an transaction in Data Stage
+// Queue a transaction in Data Stage
 // Each transaction has up to Endpoint0's max packet size.
 // This function can also transfer an zero-length packet
 static bool _data_stage_xact(uint8_t rhport)
@@ -96,13 +101,12 @@ static bool _data_stage_xact(uint8_t rhport)
     if ( xact_len ) memcpy(_usbd_ctrl_buf, _ctrl_xfer.buffer, xact_len);
   }
 
-  TU_LOG2("  XACT Control: 0x%02X, Bytes: %d\r\n", ep_addr, xact_len);
+  TU_LOG2("  Queue EP %02X with %u bytes\r\n", ep_addr, xact_len);
 
   return dcd_edpt_xfer(rhport, ep_addr, xact_len ? _usbd_ctrl_buf : NULL, xact_len);
 }
 
 // Transmit data to/from the control endpoint.
-// 
 // If the request's wLength is zero, a status packet is sent instead.
 bool tud_control_xfer(uint8_t rhport, tusb_control_request_t const * request, void* buffer, uint16_t len)
 {
@@ -118,7 +122,7 @@ bool tud_control_xfer(uint8_t rhport, tusb_control_request_t const * request, vo
       TU_ASSERT(buffer);
     }
 
-    TU_LOG2("  XFER Endpoint: 0x%02X, Bytes: %d\r\n", request->bmRequestType_bit.direction ? EDPT_CTRL_IN : EDPT_CTRL_OUT, _ctrl_xfer.data_len);
+//    TU_LOG2("  Control total data length is %u bytes\r\n", _ctrl_xfer.data_len);
 
     // Data stage
     TU_ASSERT( _data_stage_xact(rhport) );
@@ -182,7 +186,7 @@ bool usbd_control_xfer_cb (uint8_t rhport, uint8_t ep_addr, xfer_result_t result
 
   // Data Stage is complete when all request's length are transferred or
   // a short packet is sent including zero-length packet.
-  if ( (_ctrl_xfer.request.wLength == _ctrl_xfer.total_xferred) || xferred_bytes < CFG_TUD_ENDPOINT0_SIZE )
+  if ( (_ctrl_xfer.request.wLength == _ctrl_xfer.total_xferred) || (xferred_bytes < CFG_TUD_ENDPOINT0_SIZE) )
   {
     // DATA stage is complete
     bool is_ok = true;
@@ -191,6 +195,10 @@ bool usbd_control_xfer_cb (uint8_t rhport, uint8_t ep_addr, xfer_result_t result
     // callback can still stall control in status phase e.g out data does not make sense
     if ( _ctrl_xfer.complete_cb )
     {
+      #if CFG_TUSB_DEBUG >= 2
+      usbd_driver_print_control_complete_name(_ctrl_xfer.complete_cb);
+      #endif
+
       is_ok = _ctrl_xfer.complete_cb(rhport, &_ctrl_xfer.request);
     }
 

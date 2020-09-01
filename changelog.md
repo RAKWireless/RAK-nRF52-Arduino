@@ -1,5 +1,9 @@
 # RAKwireless WisBlock BSP Changelog
 
+## 0.21.001 - 2020.09.01
+
+- Update to Adafruit nRF52 Arduino BSP version 0.21.0
+
 ## 0.20.501 - 2020.08.24
 
 - Clean-up examples
@@ -8,9 +12,29 @@
 
 - Generated from Adafruit nRF52 Arduino BSP
 
-# Adafruit nRF52 Arduino Core Changelog
+
+## 0.21.0 - 2020.08.31
+
+Special thanks to @henrygab, @pyro9, @Nenik, @orrmany, @thaanstad, @kevinfrei for contributing and helping with this release.
+
+- Reworked HardwarePWM, analogWrite, Servo, Tone to address PWM hardware conflict with ownership.
+- Reworked Tone to use no interrupt handler
+- Added multiprotocol support such as ANT with additional ANT_LICENSE_KEY (require 3rd party library)
+- Fixed pgm_read_ptr(addr) macro
+- Updated & enhanced TinyUSB performance, usb event, task switching is much faster
+- Fixed BLE Characteristic discovery when the central device returns more than 4 Characteristics in a discovery request
+- Enhanced micro() to use DWT cyclecount if enabled for higher precision
+- Fixed miscalculated tick when sleeping with delay()
+- Fixed FPU-caused power consumption issue
+- Added Wire.setPins()
+- Added resumeLoop()
+- Renamed I2C terminology
+- Support precompiled library with compiler.libraries.ldflags e.g BSEC BME680
+- Added Hardware/tone_happy_birthday example sketch
 
 ## 0.20.5 - 2020.07.05
+
+Special thanks to @henrygab, @pyro9, @geeksville for contributing and helping with this release.
 
 - Updated toolchain from gcc 7-2017q4 to 9-2019q4
 - Fixed GPIOTE channel conflict between libraries
@@ -18,8 +42,6 @@
 - Added truncate() and rename() to Internal Filesystem (LittleFS).
 - Update CMSIS from v4 to v5 to build with TensorFlow
 - Update TinyUSB core to commit 0749077
-
-Special thanks to @henrygab, @pyro9, @geeksville for contributing and helping with this release.
 
 ## 0.20.1 - 2020.04.23
 
