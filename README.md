@@ -65,7 +65,7 @@ WisBlock is created with 4 modular blocks.
 #### WisBlock Core
 
 - WisBlock Core is the **data processing center** of WisBlock.
-- Some WisBlock Core modules also offer LoRa®/LoRaWan® communication and additional communication means like Bluetooth, Bluetooth Low Energy, or Wi-Fi.
+- Some WisBlock Core modules also offer LoRaÂ®/LoRaWanÂ® communication and additional communication means like Bluetooth, Bluetooth Low Energy, or Wi-Fi.
 
 #### WisBlock Sensor
 
@@ -134,7 +134,7 @@ $ pip3 install adafruit-nrfutil --user
 
 ### Drivers
 
-- [SiLabs CP2104 driver](http://www.silabs.com/products/mcu/pages/usbtouartbridgevcpdrivers.aspx) might be required for some modules.
+- [SiLabs CP2104 driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) might be required for some modules.
 
 <!---
 # TODO Add bootloader support later
