@@ -73,7 +73,7 @@ build.flags.usb= -DUSBCON -DUSE_TINYUSB -DUSB_VID={build.vid} -DUSB_PID={build.p
 # These can be overridden in platform.local.txt
 compiler.c.extra_flags=
 compiler.c.elf.extra_flags=
-compiler.cpp.extra_flags=
+compiler.cpp.extra_flags= -DDEBUG
 compiler.S.extra_flags=
 compiler.ar.extra_flags=
 compiler.libraries.ldflags=
