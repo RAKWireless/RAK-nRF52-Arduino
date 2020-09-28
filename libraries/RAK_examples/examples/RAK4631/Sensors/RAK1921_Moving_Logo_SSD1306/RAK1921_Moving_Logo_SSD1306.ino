@@ -48,8 +48,7 @@ static unsigned char RAK_Whirl_bits[] = {
   0xff, 0x03, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xff, 0xff, 0x00, 0x00, 0x00,
   0x00, 0x00, 0xf0, 0xff, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0xff,
   0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xe0, 0xff, 0x01, 0x00, 0x00, 0x00,
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 /**
    Made with Marlin Bitmap Converter
@@ -135,22 +134,24 @@ const unsigned char custom_start_bmp[] PROGMEM = {
   This is a frame buffer example.
 */
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
+U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/U8X8_PIN_NONE);
 
 // End of constructor list
 
 //#define MINI_LOGO
 
-void setup(void) {
+void setup(void)
+{
   u8g2.begin();
   u8g2.clearDisplay();
-  while (1) {
+	while (1)
+	{
     for (int i = 0; i < 64; i++)
     {
       u8g2.drawXBM(i, 0, 64, 64, RAK_Whirl_bits);
       u8g2.sendBuffer();
     }
-    for (int i = 63; i >= 0 ; i--)
+		for (int i = 63; i >= 0; i--)
     {
       u8g2.drawXBM(i, 0, 64, 64, RAK_Whirl_bits);
       u8g2.sendBuffer();
@@ -158,5 +159,6 @@ void setup(void) {
   }
 }
 
-void loop(void) {
+void loop(void)
+{
 }

@@ -3,7 +3,8 @@
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 
-void setup(void) {
+void setup(void)
+{
   u8g2.begin();
 }
 
@@ -11,7 +12,8 @@ void setup(void) {
 int x = 20;  //  5<=x<=123
 int y = 20;  //  5<=y<=59
 
-void loop(void) {
+void loop(void)
+{
   u8g2.clearBuffer();                   // clear the internal memory
   u8g2.drawCircle(x, y, 5, U8G2_DRAW_ALL);
   central();
@@ -37,7 +39,7 @@ void central()
   {
     h = 0;
   }
-  if (y == 59 )
+	if (y == 59)
   {
     h = 1;
   }

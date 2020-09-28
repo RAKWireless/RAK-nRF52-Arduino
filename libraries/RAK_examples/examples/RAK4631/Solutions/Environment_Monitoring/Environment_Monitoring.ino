@@ -89,10 +89,10 @@ void setup()
 
 	// Initialize Serial for debug output
 	Serial.begin(115200);
-//	while (!Serial)
-//	{
-//		delay(10);
-//	}
+	//	while (!Serial)
+	//	{
+	//		delay(10);
+	//	}
 	Serial.println("=====================================");
 	Serial.println("Welcome to RAK4630 LoRaWan!!!");
 	Serial.println("Type: OTAA");

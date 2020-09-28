@@ -24,7 +24,8 @@ void setup()
 {
   // Setup usb
   Serial.begin(115200);
-  while (!Serial);
+	while (!Serial)
+		;
 
   /* shtc3 init */
   Wire.begin();

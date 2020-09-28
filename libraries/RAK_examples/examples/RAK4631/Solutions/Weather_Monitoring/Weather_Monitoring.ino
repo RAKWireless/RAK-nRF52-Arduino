@@ -145,7 +145,8 @@ void setup()
 	if (!BARO.begin())
 	{
 		Serial.println("Failed to initialize pressure sensor!");
-		while (1);
+		while (1)
+			;
 	}
 	/* opt3001 init */
 	opt3001.begin(OPT3001_ADDRESS);
