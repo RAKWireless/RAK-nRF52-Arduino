@@ -85,6 +85,15 @@ There are two methods that you can use to install this BSP. We highly recommend 
 -->
 ### Stable Version
 
+----
+# ⚠️ WARNING    
+_**If you are using Windows 10**_.    
+Do _**NOT**_ install the Arduino IDE from the Microsoft App Store. Please install the original Arduino IDE from the [Arduino official website](https://www.arduino.cc/en/Main/Software)!. The Arduino app from the Microsoft App Store has problems to use third party Board Support Packages.
+:::
+
+----
+
+
  1. [Download and install the Arduino IDE](https://www.arduino.cc/en/Main/Software) (At least v1.6.12)
  2. Start the Arduino IDE
  3. Go into Preferences
