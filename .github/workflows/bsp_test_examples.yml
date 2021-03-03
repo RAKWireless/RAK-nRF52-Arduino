@@ -21,10 +21,10 @@ jobs:
 
     - name: extra libraries
       run: |
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install SX126x-Arduino
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install Arduino_LPS22HB
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install ArduinoRS485
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install ArduinoModbus
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install SX126x-Arduino
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install Arduino_LPS22HB
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install ArduinoRS485
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install ArduinoModbus
         git clone --quiet https://github.com/sparkfun/SparkFun_SHTC3_Arduino_Library
         mv SparkFun_SHTC3_Arduino_Library /home/runner/Arduino/libraries/SparkFun_SHTC3_Arduino_Library
         git clone --quiet https://github.com/closedcube/ClosedCube_OPT3001_Arduino
@@ -43,8 +43,8 @@ jobs:
         mv SparkFun_TMP102_Arduino_Library /home/runner/Arduino/libraries/SparkFun_TMP102_Arduino_Library
         git clone --quiet https://github.com/sparkfun/SparkFun_SGP30_Arduino_Library
         mv SparkFun_SGP30_Arduino_Library /home/runner/Arduino/libraries/SparkFun_SGP30_Arduino_Library
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install U8g2
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install nRF52_OLED
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install U8g2
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install nRF52_OLED
 
         
     - name: test platforms
