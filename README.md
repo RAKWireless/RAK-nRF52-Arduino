@@ -1,6 +1,4 @@
-<center><img src="./assets/RAK.png" alt="Modules" width="200"><img src="./assets/rakstar.jpg" alt="Modules" width="150"></center>  
-
-[![Build Status](https://github.com/RAKWireless/RAK-nRF52-Arduino/workflows/RAK%20BSP%20Arduino%20Build%20CI/badge.svg)](https://github.com/RAKWireless/RAK-nRF52-Arduino/actions)
+<img src="./assets/RAK.png" alt="Modules" width="150"> <img src="./assets/rakstar.jpg" alt="Modules" width="100"> [![Build Status](https://github.com/RAKWireless/RAK-nRF52-Arduino/workflows/RAK%20BSP%20Arduino%20Build%20CI/badge.svg)](https://github.com/RAKWireless/RAK-nRF52-Arduino/actions)
 
 # Arduino Core for WisBlock Core RAK4631 and RAK4601 modules
 
