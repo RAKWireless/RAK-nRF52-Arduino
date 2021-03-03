@@ -1,42 +1,63 @@
 /**
- * @file Cellular_Ping.ino
- * @author rakwireless.com
- * @brief Example shows how to ping a website
- * @version 0.1
- * @date 2020-08-21
- * 
- * @copyright Copyright (c) 2020
- * 
- * @note RAK5005-O GPIO mapping to RAK4631 GPIO ports
- * IO1 <-> P0.17 (Arduino GPIO number 17)
- * IO2 <-> P1.02 (Arduino GPIO number 34)
- * IO3 <-> P0.21 (Arduino GPIO number 21)
- * IO4 <-> P0.04 (Arduino GPIO number 4)
- * IO5 <-> P0.09 (Arduino GPIO number 9)
- * IO6 <-> P0.10 (Arduino GPIO number 10)
- * SW1 <-> P0.01 (Arduino GPIO number 1)
- */
+   @file Cellular_Ping.ino
+   @author rakwireless.com
+   @brief BG77 ping with www.baidu.com via NB-IOT
+   @version 0.1
+   @date 2020-12-28
+   @copyright Copyright (c) 2020
+**/
 
-#define BG77_POWER_KEY 17
+
+#define BG77_POWER_KEY WB_IO1
 String bg77_rsp = "";
+
 void setup()
 {
-	// Open serial communications and wait for port to open:
+	time_t serial_timeout = millis();
 	Serial.begin(115200);
 	while (!Serial)
-		delay(10); // for nrf52840 with native usb
-	Serial.println("RAK4630 Cellular TEST With CHINA UNICOM NBIOT sim card!");
+	{
+		if ((millis() - serial_timeout) < 5000)
+		{
+            delay(100);
+        }
+        else
+        {
+            break;
+        }
+	}
+	Serial.println("RAK11200 Cellular TEST With CHINA UNICOM NBIOT sim card!");
 
-	//BG77 init
-	pinMode(BG77_POWER_KEY, OUTPUT);
-	digitalWrite(BG77_POWER_KEY, 0);
-	delay(1000);
-	digitalWrite(BG77_POWER_KEY, 1);
-	delay(2000);
-	digitalWrite(BG77_POWER_KEY, 0);
-	Serial1.begin(115200);
-	delay(1000);
-	Serial.println("BG77 power up!");
+  // Check if the modem is already awake
+  time_t timeout = millis();
+  bool moduleSleeps = true;
+  Serial1.begin(115200);
+  delay(1000);
+  Serial1.println("ATI");
+  //BG77 init
+  while ((millis() - timeout) < 4000)
+  {
+    if (Serial1.available())
+    {
+      String result = Serial1.readString();
+      Serial.println("Modem response after start:");
+      Serial.println(result);
+      moduleSleeps = false;
+    }
+  }
+  if (moduleSleeps)
+  {
+    // Module slept, wake it up
+    pinMode(BG77_POWER_KEY, OUTPUT);
+    digitalWrite(BG77_POWER_KEY, 0);
+    delay(1000);
+    digitalWrite(BG77_POWER_KEY, 1);
+    delay(2000);
+    digitalWrite(BG77_POWER_KEY, 0);
+    delay(1000);
+  }
+  Serial.println("BG77 power up!");
+  
 	bg77_at("ATI", 500);
 	delay(2000);
 	bg77_at("AT+CGDCONT=1,\"IP\",\"snbiot\"", 500);

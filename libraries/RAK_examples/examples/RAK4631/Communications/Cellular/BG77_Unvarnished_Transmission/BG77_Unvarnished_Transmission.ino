@@ -1,30 +1,30 @@
 /**
- * @file BG77_Unvarnished_Transmission.ino
- * @author rakwireless.com
- * @brief bg77-at module product testing
- * @version 0.1
- * @date 2020-08-21
- * 
- * @copyright Copyright (c) 2020
- * 
- * @note RAK5005-O GPIO mapping to RAK4631 GPIO ports
- * IO1 <-> P0.17 (Arduino GPIO number 17)
- * IO2 <-> P1.02 (Arduino GPIO number 34)
- * IO3 <-> P0.21 (Arduino GPIO number 21)
- * IO4 <-> P0.04 (Arduino GPIO number 4)
- * IO5 <-> P0.09 (Arduino GPIO number 9)
- * IO6 <-> P0.10 (Arduino GPIO number 10)
- * SW1 <-> P0.01 (Arduino GPIO number 1)
- */
+   @file BG77_Unvarnished_Transmission.ino
+   @author rakwireless.com
+   @brief BG77 unvarnished transmission via USB
+   @version 0.1
+   @date 2020-12-28
+   @copyright Copyright (c) 2020
+**/
 
-#define BG77_POWER_KEY 17
+#define BG77_POWER_KEY WB_IO1
 
 void setup()
 {
-	// Open serial communications and wait for port to open:
+	time_t serial_timeout = millis();
 	Serial.begin(115200);
 	while (!Serial)
-		delay(10);
+	{
+		if ((millis() - serial_timeout) < 5000)
+		{
+            delay(100);
+        }
+        else
+        {
+            break;
+        }
+	}
+	
 	Serial.println("BG77 AT CMD TEST!");
 	// Check if the modem is already awake
 	time_t timeout = millis();
@@ -59,13 +59,13 @@ void setup()
 
 void loop()
 {
-	int timeout = 100;
+	int timeout = 1000;
 	String resp = "";
 	String snd = "";
 	char cArr[128] = {0};
 	while (timeout--)
 	{
-		if (Serial1.available() > 0)
+		while (Serial1.available() > 0)
 		{
 			resp += char(Serial1.read());
 		}

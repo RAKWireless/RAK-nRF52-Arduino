@@ -1,4 +1,10 @@
+
 # RAKwireless WisBlock BSP Changelog
+
+## 0.21.11 - 2021.03.03
+
+- Update examples
+- Add WisBlock IO assignments to variants.h of RAK4631
 
 ## 0.21.001 - 2020.09.01
 
