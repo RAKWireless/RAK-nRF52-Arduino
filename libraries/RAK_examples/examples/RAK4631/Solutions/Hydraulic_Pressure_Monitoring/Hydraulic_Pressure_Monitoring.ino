@@ -4,25 +4,14 @@
  * @brief This sketch demonstrate reading data from a P300 hydraulic pressure sensor
  *    and send the data to lora gateway.
  * @version 0.1
- * @date 2020-07-28
- * 
+ * @date 2020-07-28 
  * @copyright Copyright (c) 2020
- * 
- * @note RAK5005-O GPIO mapping to RAK4631 GPIO ports
- * IO1 <-> P0.17 (Arduino GPIO number 17)
- * IO2 <-> P1.02 (Arduino GPIO number 34)
- * IO3 <-> P0.21 (Arduino GPIO number 21)
- * IO4 <-> P0.04 (Arduino GPIO number 4)
- * IO5 <-> P0.09 (Arduino GPIO number 9)
- * IO6 <-> P0.10 (Arduino GPIO number 10)
- * SW1 <-> P0.01 (Arduino GPIO number 1)
  */
 
 #include <Arduino.h>
-#include <LoRaWan-RAK4630.h>  //http://librarymanager/All#SX126x
+#include <LoRaWan-RAK4630.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
 
-#define P300_SENSOR
 
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 35
@@ -32,19 +21,27 @@
 #define LED_BUILTIN2 36
 #endif
 
-bool doOTAA = true;
-#define SCHED_MAX_EVENT_DATA_SIZE APP_TIMER_SCHED_EVENT_DATA_SIZE /**< Maximum size of scheduler events. */
-#define SCHED_QUEUE_SIZE 60										  /**< Maximum number of events in the scheduler queue. */
+bool g_doOTAA = true;
+#define SCHED_MAX_EVENT_DATA_SIZE APP_TIMER_SCHED_EVENT_DATA_SIZE	/**< Maximum size of scheduler events. */
+#define SCHED_QUEUE_SIZE 60										  	/**< Maximum number of events in the scheduler queue. */
 #define LORAWAN_DATERATE DR_0
 #define LORAWAN_TX_POWER TX_POWER_0
-#define JOINREQ_NBTRIALS 3 /**< Number of trials for the join request. */
-DeviceClass_t gCurrentClass = CLASS_A;
-lmh_confirm gCurrentConfirm = LMH_CONFIRMED_MSG;
-uint8_t gAppPort = LORAWAN_APP_PORT;
+#define JOINREQ_NBTRIALS 3 											/**< Number of trials for the join request. */
+DeviceClass_t g_CurrentClass = CLASS_A;
+lmh_confirm g_CurrentConfirm = LMH_CONFIRMED_MSG;
+uint8_t g_AppPort = LORAWAN_APP_PORT;
 
 /**@brief Structure containing LoRaWan parameters, needed for lmh_init()
  */
-static lmh_param_t lora_param_init = {LORAWAN_ADR_ON, LORAWAN_DATERATE, LORAWAN_PUBLIC_NETWORK, JOINREQ_NBTRIALS, LORAWAN_TX_POWER, LORAWAN_DUTYCYCLE_OFF};
+static lmh_param_t g_lora_param_init = {
+    LORAWAN_ADR_ON,
+    LORAWAN_DATERATE,
+    LORAWAN_PUBLIC_NETWORK,
+    JOINREQ_NBTRIALS,
+    LORAWAN_TX_POWER,
+    LORAWAN_DUTYCYCLE_OFF
+};
+
 
 // Foward declaration
 static void lorawan_has_joined_handler(void);
@@ -54,46 +51,60 @@ static void send_lora_frame(void);
 
 /**@brief Structure containing LoRaWan callback functions, needed for lmh_init()
 */
-static lmh_callback_t lora_callbacks = {BoardGetBatteryLevel, BoardGetUniqueId, BoardGetRandomSeed,
-										lorawan_rx_handler, lorawan_has_joined_handler, lorawan_confirm_class_handler};
+static lmh_callback_t g_lora_callbacks = {
+	BoardGetBatteryLevel,
+	BoardGetUniqueId,
+	BoardGetRandomSeed,
+	lorawan_rx_handler,
+	lorawan_has_joined_handler,
+	lorawan_confirm_class_handler
+};
 
-//OTAA keys
-uint8_t nodeDeviceEUI[8] = {0x67, 0x79, 0x6e, 0xad, 0xf6, 0xab, 0xd2, 0x16};
-uint8_t nodeAppEUI[8] = {0xB8, 0x27, 0xEB, 0xFF, 0xFE, 0x39, 0x00, 0x00};
-uint8_t nodeAppKey[16] = {0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77};
+//OTAA keys !!! KEYS ARE MSB !!!
+uint8_t g_nodeDeviceEUI[8] = {0x67, 0x79, 0x6e, 0xad, 0xf6, 0xab, 0xd2, 0x16};
+uint8_t g_nodeAppEUI[8] = {0xB8, 0x27, 0xEB, 0xFF, 0xFE, 0x39, 0x00, 0x00};
+uint8_t g_nodeAppKey[16] = {0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77, 0x77};
 
 // Private defination
 #define LORAWAN_APP_DATA_BUFF_SIZE 64										  /**< buffer size of the data to be transmitted. */
 #define LORAWAN_APP_INTERVAL 20000											  /**< Defines for user timer, the application data transmission interval. 20s, value in [ms]. */
-static uint8_t m_lora_app_data_buffer[LORAWAN_APP_DATA_BUFF_SIZE];			  //< Lora user application data buffer.
-static lmh_app_data_t m_lora_app_data = {m_lora_app_data_buffer, 0, 0, 0, 0}; //< Lora user application data structure.
+static uint8_t g_m_lora_app_data_buffer[LORAWAN_APP_DATA_BUFF_SIZE];			  //< Lora user application data buffer.
+static lmh_app_data_t g_m_lora_app_data = {g_m_lora_app_data_buffer, 0, 0, 0, 0}; //< Lora user application data structure.
 
-TimerEvent_t appTimer;
+TimerEvent_t g_appTimer;
 static uint32_t timers_init(void);
 
-static uint32_t count = 0;
-static uint32_t count_fail = 0;
+static uint32_t g_count = 0;
+static uint32_t g_count_fail = 0;
 
 void setup()
 {
 	pinMode(LED_BUILTIN, OUTPUT);
 	digitalWrite(LED_BUILTIN, LOW);
 
-	/*
-  * WisBLOCK 5811 Power On
-  */
-	pinMode(17, OUTPUT);
-	digitalWrite(17, HIGH);
+	/* WisBLOCK 5801 Power On */
+	pinMode(WB_IO1, OUTPUT);
+	digitalWrite(WB_IO1, HIGH);
+	/* WisBLOCK 5801 Power On */
 
 	// Initialize LoRa chip.
 	lora_rak4630_init();
 
 	// Initialize Serial for debug output
+	time_t timeout = millis();
 	Serial.begin(115200);
 	while (!Serial)
 	{
-		delay(10);
+		if ((millis() - timeout) < 5000)
+		{
+			delay(100);
+		}
+		else
+		{
+			break;
+		}
 	}
+	
 	Serial.println("=====================================");
 	Serial.println("Welcome to RAK4630 LoRaWan!!!");
 	Serial.println("Type: OTAA");
@@ -132,12 +143,12 @@ void setup()
 	}
 
 	// Setup the EUIs and Keys
-	lmh_setDevEui(nodeDeviceEUI);
-	lmh_setAppEui(nodeAppEUI);
-	lmh_setAppKey(nodeAppKey);
+	lmh_setDevEui(g_nodeDeviceEUI);
+	lmh_setAppEui(g_nodeAppEUI);
+	lmh_setAppKey(g_nodeAppKey);
 
 	// Initialize LoRaWan
-	err_code = lmh_init(&lora_callbacks, lora_param_init, doOTAA);
+	err_code = lmh_init(&g_lora_callbacks, g_lora_param_init, g_doOTAA);
 	if (err_code != 0)
 	{
 		Serial.printf("lmh_init failed - %d\n", err_code);
@@ -159,12 +170,12 @@ void lorawan_has_joined_handler(void)
 {
 	Serial.println("OTAA Mode, Network Joined!");
 
-	lmh_error_status ret = lmh_class_request(gCurrentClass);
+	lmh_error_status ret = lmh_class_request(g_CurrentClass);
 	if (ret == LMH_SUCCESS)
 	{
 		delay(1000);
-		TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
-		TimerStart(&appTimer);
+		TimerSetValue(&g_appTimer, LORAWAN_APP_INTERVAL);
+		TimerStart(&g_appTimer);
 	}
 }
 
@@ -182,31 +193,29 @@ void lorawan_confirm_class_handler(DeviceClass_t Class)
 {
 	Serial.printf("switch to class %c done\n", "ABC"[Class]);
 	// Informs the server that switch has occurred ASAP
-	m_lora_app_data.buffsize = 0;
-	m_lora_app_data.port = gAppPort;
-	lmh_send(&m_lora_app_data, gCurrentConfirm);
+	g_m_lora_app_data.buffsize = 0;
+	g_m_lora_app_data.port = g_AppPort;
+	lmh_send(&g_m_lora_app_data, g_CurrentConfirm);
 }
-
-#ifdef P300_SENSOR
 
 int get_pressure(void)
 {
 	int i;
 
-	int sensor_pin = A1;   // select the input pin for the potentiometer
-	int mcu_ain_value = 0; // variable to store the value coming from the sensor
+	int sensor_pin = WB_A1;   // select the input pin for the potentiometer
+	int mcu_ain_raw = 0; // variable to store the value coming from the sensor
 
 	int pressure; //KPa as unit
-	int average_value;
+	int average_raw;
 	float voltage_ain, current_sensor;
 
-	for (i = 0; i < 5; i++)
+	for (i = 0; i < 32; i++)
 	{
-		mcu_ain_value += analogRead(sensor_pin);
+		mcu_ain_raw += analogRead(sensor_pin);
 	}
-	average_value = mcu_ain_value / i;
+	average_raw = mcu_ain_raw / i;
 
-	voltage_ain = average_value * 3.6 / 1024; //raef 3.6v / 10bit ADC
+	voltage_ain = average_raw * 3.6 / 1024; //raef 3.6v / 10bit ADC
 
 	current_sensor = voltage_ain / 149 * 1000; //WisBlock RAK5801 (0 ~ 20mA) I=U/149*1000 (mA)
 
@@ -218,7 +227,6 @@ int get_pressure(void)
 
 	return pressure;
 }
-#endif
 
 void send_lora_frame(void)
 {
@@ -234,22 +242,22 @@ void send_lora_frame(void)
 
 	uint32_t i = 0;
 
-	m_lora_app_data.port = gAppPort;
-	m_lora_app_data.buffer[i++] = 0x04;
-	m_lora_app_data.buffer[i++] = (p >> 8) & 0xFF;
-	m_lora_app_data.buffer[i++] = p & 0xFF;
-	m_lora_app_data.buffsize = i;
+	g_m_lora_app_data.port = g_AppPort;
+	g_m_lora_app_data.buffer[i++] = 0x04;
+	g_m_lora_app_data.buffer[i++] = (p >> 8) & 0xFF;
+	g_m_lora_app_data.buffer[i++] = p & 0xFF;
+	g_m_lora_app_data.buffsize = i;
 
-	lmh_error_status error = lmh_send(&m_lora_app_data, gCurrentConfirm);
+	lmh_error_status error = lmh_send(&g_m_lora_app_data, g_CurrentConfirm);
 	if (error == LMH_SUCCESS)
 	{
-		count++;
-		Serial.printf("lmh_send ok count %d\n", count);
+		g_count++;
+		Serial.printf("lmh_send ok count %d\n", g_count);
 	}
 	else
 	{
-		count_fail++;
-		Serial.printf("lmh_send fail count %d\n", count_fail);
+		g_count_fail++;
+		Serial.printf("lmh_send fail count %d\n", g_count_fail);
 	}
 }
 
@@ -257,8 +265,8 @@ void send_lora_frame(void)
  */
 void tx_lora_periodic_handler(void)
 {
-	TimerSetValue(&appTimer, LORAWAN_APP_INTERVAL);
-	TimerStart(&appTimer);
+	TimerSetValue(&g_appTimer, LORAWAN_APP_INTERVAL);
+	TimerStart(&g_appTimer);
 	Serial.println("Sending frame now...");
 	send_lora_frame();
 }
@@ -269,6 +277,6 @@ void tx_lora_periodic_handler(void)
  */
 uint32_t timers_init(void)
 {
-	TimerInit(&appTimer, tx_lora_periodic_handler);
+	TimerInit(&g_appTimer, tx_lora_periodic_handler);
 	return 0;
 }

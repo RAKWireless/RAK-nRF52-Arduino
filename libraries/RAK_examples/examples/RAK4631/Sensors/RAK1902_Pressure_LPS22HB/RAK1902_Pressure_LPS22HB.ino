@@ -1,53 +1,74 @@
-/**
- * @file RAK1902_Pressure_LPS22HB.ino
- * @author rakwireless.com
- * @brief Setup and read values from a LPS22HB barometric  sensor
- * @version 0.1
- * @date 2020-07-28
- * 
- * @copyright Copyright (c) 2020
- * 
- * @note RAK5005-O GPIO mapping to RAK4631 GPIO ports
- * IO1 <-> P0.17 (Arduino GPIO number 17)
- * IO2 <-> P1.02 (Arduino GPIO number 34)
- * IO3 <-> P0.21 (Arduino GPIO number 21)
- * IO4 <-> P0.04 (Arduino GPIO number 4)
- * IO5 <-> P0.09 (Arduino GPIO number 9)
- * IO6 <-> P0.10 (Arduino GPIO number 10)
- * SW1 <-> P0.01 (Arduino GPIO number 1)
- */
-#include <Arduino_LPS22HB.h> // Click here to get the library: http://librarymanager/All#Arduino_LPS22HB
 
-void setup()
-{
-	// Setup usb
+/**
+   @file RAK1902_Pressure_LPS22HB.ino
+   @author rakwireless.com
+   @brief Setup and read values from a lps22hb sensor
+   @version 0.1
+   @date 2020-12-28
+   @copyright Copyright (c) 2020
+**/
+
+
+#include <Wire.h>
+#include <Adafruit_LPS2X.h>
+#include <Adafruit_Sensor.h>  // Click here to get the library: http://librarymanager/All#Adafruit_LPS2X
+
+Adafruit_LPS22 g_lps22hb;
+
+void setup(void) {
+	time_t timeout = millis();
 	Serial.begin(115200);
 	while (!Serial)
-		;
-
-	/* LPS22HB init */
-	if (!BARO.begin())
 	{
-		Serial.println("Failed to initialize pressure sensor!");
-		while (1)
-			;
+    if ((millis() - timeout) < 5000)
+    {
+      delay(100);
+    }
+    else
+    {
+      break;
+    }
 	}
+
+  Serial.println("Adafruit LPS22 test!");
+
+  // Try to initialize!
+  if (!g_lps22hb.begin_I2C(0x5c)) 
+  {
+    Serial.println("Failed to find LPS22 chip");
+    while (1) 
+    { 
+      delay(10); 
+    }
+  }
+
+  Serial.println("LPS22 Found!");
+
+  g_lps22hb.setDataRate(LPS22_RATE_10_HZ);
+  Serial.print("Data rate set to: ");
+
+  switch (g_lps22hb.getDataRate()) 
+  {
+    case LPS22_RATE_ONE_SHOT: Serial.println("One Shot / Power Down"); 
+      break;
+    case LPS22_RATE_1_HZ: Serial.println("1 Hz"); 
+      break;
+    case LPS22_RATE_10_HZ: Serial.println("10 Hz"); 
+      break;
+    case LPS22_RATE_25_HZ: Serial.println("25 Hz"); 
+      break;
+    case LPS22_RATE_50_HZ: Serial.println("50 Hz"); 
+      break;
+
+  }
 }
 
-void loop()
-{
-
-	lps22hb_get();
-	delay(1000);
-}
-
-void lps22hb_get()
-{
-	// read the sensor value
-	float pressure = BARO.readPressure();
-
-	// print the sensor value
-	Serial.print("Pressure = ");
-	Serial.print(pressure);
-	Serial.println(" kPa");
+void loop() {
+  sensors_event_t temp;
+  sensors_event_t pressure;
+  g_lps22hb.getEvent(&pressure, &temp);
+  Serial.print("Temperature: ");Serial.print(temp.temperature);Serial.println(" degrees C");
+  Serial.print("Pressure: ");Serial.print(pressure.pressure);Serial.println(" hPa");
+  Serial.println("");
+  delay(1000);
 }

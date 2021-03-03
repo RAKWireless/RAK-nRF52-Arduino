@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 name=RAKwireless nRF Modules
-version=0.21.001
+version=0.21.11
 
 # Compile variables
 # -----------------

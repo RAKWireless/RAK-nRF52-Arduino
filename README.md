@@ -1,4 +1,4 @@
-<center><img src="/assets/RAK.png" alt="Modules" width="200"></center>  
+<img src="./assets/RAK.png" alt="Modules" width="150"> <img src="./assets/rakstar.jpg" alt="Modules" width="100"> [![Build Status](https://github.com/RAKWireless/RAK-nRF52-Arduino/workflows/RAK%20BSP%20Arduino%20Build%20CI/badge.svg)](https://github.com/RAKWireless/RAK-nRF52-Arduino/actions)
 
 # Arduino Core for WisBlock Core RAK4631 and RAK4601 modules
 
@@ -7,13 +7,13 @@ This repository contains the Arduino BSP for WisBlock Core modules:
 - [RAK4601](https://www.rakwireless.com)
 
 ## What is WisBlock?
-WisBlock is an amazing product built by the RAK company for IoT industry. It can build circuits like clicking blocks together to quickly to realize your idea. Checkout [Overview](#overview) for information or visit our [documentation center](https://doc.rakwireless.com)     
+WisBlock is an amazing product built by the RAK company for IoT industry. It can build circuits like clicking blocks together to quickly to realize your idea. Checkout [Overview](#overview) for information or visit our [documentation center](https://docs.rakwireless.com/Product-Categories/WisBlock/)     
 
 **RAKwireless invests time and resources providing this open source code, please support RAKwireless and open-source hardware by purchasing products from [RAKwireless](https://rakwireless.com)!**
 
 **_For support and questions about RAKwireless products please visit our [forum](https://forum.rakwireless.com/)    
 For examples and quick start tutorial please visit our [Github Repo](https://github.com/RAKWireless/Wisblock)    
-For additional information about RAK products please visit our [Documentation Center](https://doc.rakwireless.com/)    
+For additional information about RAK products please visit our [Documentation Center](https://docs.rakwireless.com)    
 To buy WisBlock modules please visit our [online store](https://store.rakwireless.com/)_**
 
 ----
@@ -77,12 +77,13 @@ WisBlock is created with 4 modular blocks.
 - WisBlock IO modules **extend the input and output possibilities** of WisBlock.
 - Options include cellular, displays, LEDs, button interfaces, and additional USB and GPIO ports as well as Wi-Fi.
 
-<center><img src="/assets/WisBlock.png" alt="Modules""></center>  
+<center><img src="./assets/WisBlock.png" alt="Modules""></center>  
 
 ## BSP Installation
 <!--
 There are two methods that you can use to install this BSP. We highly recommend the first option unless you wish to participate in active development of this codebase via Github.
 -->
+
 ### Stable Version
 
 ----
@@ -98,16 +99,16 @@ Do _**NOT**_ install the Arduino IDE from the Microsoft App Store. Please instal
  2. Start the Arduino IDE
  3. Go into Preferences
  4. Add **'https://downloads.rakwireless.com/Arduino/BSP/package_raknrf_index.json'** as a new line in the  **'Additional Board Manager URL'** list. (see below figure)
-<center><img src="/assets/Add-BSP-URL.png" alt="Add BSP""></center>    
+<center><img src="./assets/Add-BSP-URL.png" alt="Add BSP""></center>    
  5. Restart the Arduino IDE
  6. Open the Boards Manager from the Tools -> Board menu and install 'RAKwireless nRF Boards'
-<center><img src="/assets/Install-BSP.png" alt="Install""></center>    
+<center><img src="./assets/Install-BSP.png" alt="Install""></center>    
 7. Once the BSP is installed, select 'RAK4631' or 'RAK4601' from the Tools -> Board menu, which will update your system config to use the right compiler and settings for the module.
 <center><img src="/assets/Select-Board.png" alt="Select Board""></center>    
 
 ### Examples and Tutorials
 After you selected a RAK board you can see examples for all WisBlock modules
-<center><img src="/assets/List-examples.png" alt="Select Board""></center>     
+<center><img src="./assets/List-examples.png" alt="Select Board""></center>     
 
 For more information about the examples and tutorials visit our [Github WisBlock repo](https://github.com/RAKWireless/WisBlock)    
 
