@@ -106,10 +106,10 @@
 				{
 					"name": "RAKwireless nRF Boards",
 					"architecture": "nrf52",
-					"version": "0.21.11",
+					"version": "0.21.20",
 					"category": "Contributed",
-					"url": "https://github.com/RAKWireless/RAK-nRF52-Arduino/archive/0.21.11.tar.gz?raw=true",
-					"archiveFileName": "RAK-nRF52-Arduino-0.21.11.tar.gz",
+					"url": "https://github.com/RAKWireless/RAK-nRF52-Arduino/archive/0.21.20.tar.gz?raw=true",
+					"archiveFileName": "RAK-nRF52-Arduino-0.21.20.tar.gz",
 					"checksum": "SHA-256:B1C7F56E8F8C4CB55AE8423991178644BA8860B901F03749988D027FEFACFD7B",
 					"size": "19043392",
 					"boards": [
@@ -118,9 +118,6 @@
 						},
 						{
 							"name": "RAK4601"
-						},
-						{
-							"name": "RAK5010"
 						}
 					],
 					"toolsDependencies": [

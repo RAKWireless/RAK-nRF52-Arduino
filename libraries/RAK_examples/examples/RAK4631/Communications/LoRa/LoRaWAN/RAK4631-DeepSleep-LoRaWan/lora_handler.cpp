@@ -26,6 +26,8 @@ static lmh_app_data_t m_lora_app_data = {m_lora_app_data_buffer, 0, 0, 0, 0};
 // LoRaWan event handlers
 /** LoRaWan callback when join network finished */
 static void lorawan_has_joined_handler(void);
+/** LoRaWan callback when join failed */
+static void lorawan_join_failed_handler(void);
 /** LoRaWan callback when data arrived */
 static void lorawan_rx_handler(lmh_app_data_t *app_data);
 /** LoRaWan callback after class change request finished */
@@ -51,8 +53,8 @@ static lmh_param_t lora_param_init = {LORAWAN_ADR_OFF, DR_3, LORAWAN_PUBLIC_NETW
 
 /** Structure containing LoRaWan callback functions, needed for lmh_init() */
 static lmh_callback_t lora_callbacks = {BoardGetBatteryLevel, BoardGetUniqueId, BoardGetRandomSeed,
-										lorawan_rx_handler, lorawan_has_joined_handler, lorawan_confirm_class_handler};
-
+                                        lorawan_rx_handler, lorawan_has_joined_handler, lorawan_confirm_class_handler, lorawan_join_failed_handler
+                                       };
 //  !!!! KEYS ARE MSB !!!!
 /** Device EUI required for OTAA network join */
 uint8_t nodeDeviceEUI[8] = {0x00, 0x0D, 0x75, 0xE6, 0x56, 0x4D, 0xC1, 0xF6};
@@ -69,6 +71,9 @@ uint8_t nodeAppsKey[16] = {0x3F, 0x6A, 0x66, 0x45, 0x9D, 0x5E, 0xDC, 0xA6, 0x3C,
 
 /** Flag whether to use OTAA or ABP network join method */
 bool doOTAA = true;
+
+DeviceClass_t gCurrentClass = CLASS_A;                  /* class definition*/
+LoRaMacRegion_t gCurrentRegion = LORAMAC_REGION_EU868;  /* Region:EU868*/
 
 /** LoRa task handle */
 TaskHandle_t loraTaskHandle;
@@ -115,15 +120,21 @@ int8_t initLoRaWan(void)
 	}
 
 	// Setup the EUIs and Keys
+  if (doOTAA)
+  {
 	lmh_setDevEui(nodeDeviceEUI);
 	lmh_setAppEui(nodeAppEUI);
 	lmh_setAppKey(nodeAppKey);
+  }
+  else
+  {
 	lmh_setNwkSKey(nodeNwsKey);
 	lmh_setAppSKey(nodeAppsKey);
 	lmh_setDevAddr(nodeDevAddr);
+  }
 
 	// Initialize LoRaWan
-	if (lmh_init(&lora_callbacks, lora_param_init, doOTAA) != 0)
+	if (lmh_init(&lora_callbacks, lora_param_init, doOTAA, gCurrentClass, gCurrentRegion) != 0)
 	{
 		return -2;
 	}
@@ -210,7 +221,14 @@ static void lorawan_has_joined_handler(void)
 	taskWakeupTimer.begin(SLEEP_TIME, periodicWakeup);
 	taskWakeupTimer.start();
 }
-
+/**@brief LoRa function for handling OTAA join failed
+*/
+static void lorawan_join_failed_handler(void)
+{
+  Serial.println("OVER_THE_AIR_ACTIVATION failed!");
+  Serial.println("Check your EUI's and Keys's!");
+  Serial.println("Check if a Gateway is in range!");
+}
 /**
  * @brief Function for handling LoRaWan received data from Gateway
  *

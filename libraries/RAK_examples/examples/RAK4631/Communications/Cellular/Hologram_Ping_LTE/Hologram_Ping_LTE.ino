@@ -76,7 +76,7 @@ void setup()
   delay(1000);
   Serial1.println("ATI");
   //BG77 init
-  while ((millis() - timeout) < 4000)
+  while ((millis() - timeout) < 6000)
   {
     if (Serial1.available())
     {

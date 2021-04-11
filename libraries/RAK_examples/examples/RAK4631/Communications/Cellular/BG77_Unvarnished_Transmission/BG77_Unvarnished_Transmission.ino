@@ -33,7 +33,7 @@ void setup()
 	delay(1000);
 	Serial1.println("ATI");
 	//BG77 init
-	while ((millis() - timeout) < 4000)
+	while ((millis() - timeout) < 6000)
 	{
 		if (Serial1.available())
 		{
@@ -59,13 +59,13 @@ void setup()
 
 void loop()
 {
-	int timeout = 1000;
+	int timeout = 100;
 	String resp = "";
 	String snd = "";
 	char cArr[128] = {0};
 	while (timeout--)
 	{
-		while (Serial1.available() > 0)
+		if (Serial1.available() > 0)
 		{
 			resp += char(Serial1.read());
 		}
