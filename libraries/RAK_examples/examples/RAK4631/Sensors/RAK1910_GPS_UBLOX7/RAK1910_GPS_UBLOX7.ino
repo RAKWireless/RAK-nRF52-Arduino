@@ -34,9 +34,6 @@ void setup()
 
 
   //gps init
-  pinMode(WB_IO1, OUTPUT);
-  digitalWrite(WB_IO1, HIGH);
-
   pinMode(WB_IO2, OUTPUT);
   digitalWrite(WB_IO2, 0);
   delay(1000);

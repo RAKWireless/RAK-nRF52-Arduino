@@ -96,12 +96,8 @@ void setup()
 
 void loop()
 {
-	// Handle Radio events
-	Radio.IrqProcess();
-
-	// We are on FreeRTOS, give other tasks a chance to run
-	delay(100);
-	yield();
+  // Put your application tasks here, like reading of sensors,
+  // Controlling actuators and/or other functions. 
 }
 
 /**@brief Function to be executed on Radio Tx Done event

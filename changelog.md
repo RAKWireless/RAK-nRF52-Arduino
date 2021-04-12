@@ -1,6 +1,11 @@
 
 # RAKwireless WisBlock BSP Changelog
 
+## 0.21.20 - 2021.04.10
+
+- Update examples
+- Make compatible with new Sx126x-Arduino library V2.0.0
+
 ## 0.21.11 - 2021.03.03
 
 - Update examples

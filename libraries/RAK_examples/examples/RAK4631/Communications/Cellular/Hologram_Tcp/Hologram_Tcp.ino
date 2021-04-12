@@ -1,7 +1,7 @@
 /**
    @file Hologram_Tcp.ino
    @author rakwireless.com
-   @brief BG77 tcp test with Hologram
+   @brief BG77 tcp test with Hologram, send gps data to server
    @version 0.1
    @date 2020-12-28
    @copyright Copyright (c) 2020
@@ -9,15 +9,18 @@
 
 
 #define BG77_POWER_KEY WB_IO1
+#define BG77_GPS_ENABLE WB_IO2
 
 String bg77_rsp = "";
 
 //Hologarm tcp message format is jason. Remember to replace the card key in type k. 
 //About key details: https://support.hologram.io/hc/en-us/articles/360035212714-Device-keys
 //About message details: https://www.hologram.io/references/embedded-apis#send-a-message-to-the-hologram-cloud 
-String hologram_msg = "{\"k\":\"+C7pOb8=\",\"d\":\"hello,world!\",\"t\":\"TOPIC1\"}";
+String hologram_msg_pre = "{\"k\":\"+C7pOb8=\",\"d\":";
+String hologram_msg_suff = ",\"t\":\"TOPIC1\"}";
+String hologram_msg = "";
 String send_data_length_at = "";
-
+String gps_data = "";
 
 void setup()
 {
@@ -41,9 +44,11 @@ void setup()
   bool moduleSleeps = true;
   Serial1.begin(115200);
   delay(1000);
+  pinMode(BG77_GPS_ENABLE, OUTPUT);
+  digitalWrite(BG77_GPS_ENABLE, 1);
   Serial1.println("ATI");
   //BG77 init
-  while ((millis() - timeout) < 4000)
+  while ((millis() - timeout) < 6000)
   {
     if (Serial1.available())
     {
@@ -85,6 +90,54 @@ void setup()
   delay(2000);
   
 }
+void parse_gps()
+{
+   int index1 = gps_data.indexOf(',');
+
+   if(strstr(gps_data.c_str(),"E") != NULL)
+   {
+      int index2 = gps_data.indexOf('E'); 
+      gps_data = gps_data.substring(index1+1,index2+1); 
+   }
+   if(strstr(gps_data.c_str(),"W") != NULL)
+   {
+      int index3 = gps_data.indexOf('W'); 
+      gps_data = gps_data.substring(index1+1,index3+1);       
+   }   
+   
+}
+
+
+void get_gps()
+{
+  int gps_count = 300;
+  int timeout = 1000;
+  while(gps_count--)
+  {
+    Serial1.write("AT+QGPSLOC?\r");
+    timeout = 1000;
+    while (timeout--)
+    {
+      if (Serial1.available())
+      {
+         gps_data += char(Serial1.read());
+      }
+      delay(1);
+    }
+    if(strstr(gps_data.c_str(),"CME ERROR") != NULL)
+    {
+      gps_data = "";
+      continue;
+    }      
+    if(strstr(gps_data.c_str(),"E") != NULL || strstr(gps_data.c_str(),"W") != NULL)
+    {
+      Serial.println(gps_data);
+      parse_gps();
+      break;
+    }      
+  }
+}
+
 
 //this function is suitable for most AT commands of bg96. e.g. bg96_at("ATI")
 void bg77_at(char *at, uint16_t timeout)
@@ -110,13 +163,22 @@ void bg77_at(char *at, uint16_t timeout)
 
 void send_test_data()
 {
+  //open gps, gsm/nb will stop work now
+  bg77_at("AT+QGPS=1,1", 20000);
+  //get gps data, this will cost some time
+  get_gps();
+  //close gps
+  bg77_at("AT+QGPSEND", 2000);  
+  //combine the data packet
+  hologram_msg = hologram_msg_pre+gps_data+hologram_msg_suff;
+  Serial.println(hologram_msg);
+  gps_data = "";
   //send data length command
   char tmp[256] = {0};
   send_data_length_at = "AT+QISEND=0," + hologram_msg.length();
   strncpy(tmp, send_data_length_at.c_str(), send_data_length_at.length());
   bg77_at(tmp, 3000);
   delay(2000);
-  
   //send data
   memset(tmp,0,256);
   strncpy(tmp, hologram_msg.c_str(), hologram_msg.length());
@@ -128,5 +190,6 @@ void loop()
 {
 	Serial.println("Send test data to Hologram via TCP!");
 	send_test_data();
-	delay(3000);
+  //consider the gps fix time, interval should be long
+  delay(300000);
 }

@@ -5,7 +5,7 @@
  * out the samples to the Serial console. The Serial Plotter built into the
  * Arduino IDE can be used to plot the audio data (Tools -> Serial Plotter)
  * @version 0.1
- * @date 2020-1-7
+ * @date 2021-03-07
  *
  * @copyright Copyright (c) 2020
  *
@@ -24,9 +24,8 @@
 
 #include <PDM.h>
 
-
-#define PDM_DATA_PIN  24
-#define PDM_CLK_PIN   25
+#define PDM_DATA_PIN  21
+#define PDM_CLK_PIN   4
 #define PDM_PWR_PIN   -1
 
 // buffer to read samples into, each sample is 16-bits
@@ -51,16 +50,13 @@ void setup() {
 		}
 	}
 
-  //
   PDM.setPins(PDM_DATA_PIN, PDM_CLK_PIN, PDM_PWR_PIN);
-  
+  PDM.setBufferSize(256);
   // configure the data receive callback
   PDM.onReceive(onPDMdata);
-
   // optionally set the gain, defaults to 20
-  PDM.setGain(30);
+  PDM.setGain(20);
 
-  
   // initialize PDM with:
   // - 2 means stereo, 1 means single
   // - a 16 kHz sample rate
@@ -84,7 +80,6 @@ void loop()
     }
     // clear the read count
 	  samplesRead = 0;
-
 }
 
 void onPDMdata() {
@@ -93,7 +88,6 @@ void onPDMdata() {
 
   // read into the sample buffer
   PDM.read((uint8_t *)sampleBuffer, bytesAvailable);
-
   // 16-bit, 2 bytes per sample
   samplesRead = bytesAvailable / 2;
 }

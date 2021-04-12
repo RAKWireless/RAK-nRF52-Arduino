@@ -77,12 +77,9 @@ WisBlock is created with 4 modular blocks.
 - WisBlock IO modules **extend the input and output possibilities** of WisBlock.
 - Options include cellular, displays, LEDs, button interfaces, and additional USB and GPIO ports as well as Wi-Fi.
 
-<center><img src="./assets/WisBlock.png" alt="Modules""></center>  
+<center><img src="./assets/WisBlock.png" alt="Modules"></center>  
 
 ## BSP Installation
-<!--
-There are two methods that you can use to install this BSP. We highly recommend the first option unless you wish to participate in active development of this codebase via Github.
--->
 
 ### Stable Version
 
@@ -95,41 +92,14 @@ Do _**NOT**_ install the Arduino IDE from the Microsoft App Store. Please instal
 ----
 
 
- 1. [Download and install the Arduino IDE](https://www.arduino.cc/en/Main/Software) (At least v1.6.12)
- 2. Start the Arduino IDE
- 3. Go into Preferences
- 4. Add **'https://downloads.rakwireless.com/Arduino/BSP/package_raknrf_index.json'** as a new line in the  **'Additional Board Manager URL'** list. (see below figure)
-<center><img src="./assets/Add-BSP-URL.png" alt="Add BSP""></center>    
- 5. Restart the Arduino IDE
- 6. Open the Boards Manager from the Tools -> Board menu and install 'RAKwireless nRF Boards'
-<center><img src="./assets/Install-BSP.png" alt="Install""></center>    
-7. Once the BSP is installed, select 'RAK4631' or 'RAK4601' from the Tools -> Board menu, which will update your system config to use the right compiler and settings for the module.
-<center><img src="/assets/Select-Board.png" alt="Select Board""></center>    
-
+#### (1) [Download and install the Arduino IDE](https://www.arduino.cc/en/Main/Software) (At least v1.6.12)
+#### (2) Follow [this guide](https://github.com/RAKWireless/RAKwireless-Arduino-BSP-Index) to install the required Board Support Package (BSP)    
+----
 ### Examples and Tutorials
 After you selected a RAK board you can see examples for all WisBlock modules
-<center><img src="./assets/List-examples.png" alt="Select Board""></center>     
+<center><img src="./assets/List-examples.png" alt="Select Board"></center>     
 
 For more information about the examples and tutorials visit our [Github WisBlock repo](https://github.com/RAKWireless/WisBlock)    
-
-### Development Version
-
-<!--
-# TODO do we need installation from the repo? Add it later
- 1. Install BSP via Board Manager as above to install compiler & tools.
- 2. Delete the core folder `nrf52` installed by Board Manager in Adruino15, depending on your OS. It could be
-  * macOS  : `~/Library/Arduino15/packages/raknrf/hardware/nrf52`
-  * Linux  : `~/.arduino15/packages/raknrf/hardware/nrf52`
-  * Windows: `%APPDATA%\Local\Arduino15\packages\raknrf\hardware\nrf52`
- 3. `cd <SKETCHBOOK>`, where `<SKETCHBOOK>` is your Arduino Sketch folder:
-  * macOS  : `~/Documents/Arduino`
-  * Linux  : `~/Arduino`
-  * Windows: `~/Documents/Arduino`
- 4. Create a folder named `hardware/RAKwireless`, if it does not exist, and change directories to it
- 5. Clone this repo & its submodules: `git clone --recurse-submodules https://github.com/beegee-tokyo/WisCore-nRF-BSP.git`
- 6. Restart the Arduino IDE
- 7. Once the BSP is installed, select 'RAK4631' or 'RAK4601' from the Tools -> Board menu, which will update your system config to use the right compiler and settings for the module.
--->
 
 ### Adafruit's nrfutil tools
 
@@ -202,7 +172,7 @@ $ nrfjprog --reset -f nrf52
 
 This BSP is based on [Adafruits nRF52 BSP](https://github.com/adafruit/Adafruit_nRF52_Arduino),    
 which is based on [Arduino-nRF5](https://github.com/sandeepmistry/arduino-nRF5) by Sandeep Mistry,    
-which in turn is based on the [Arduino SAMD Core](https://github.com/arduino/ArduinoCore-samd).
+which in turn is based on the [Arduino SAMD Core](https://github.com/arduino/ArduinoCore-samd).    
 
 The following libraries are used:
 

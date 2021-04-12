@@ -18,7 +18,6 @@
 
 menu.softdevice=Bootloader
 menu.debug=Debug
-menu.region=Region
 
 # ----------------------------------
 # WisBlock Core RAK4631 Board
@@ -64,20 +63,6 @@ WisCoreRAK4631Board.menu.debug.l3=Level 3 (Segger SystemView)
 WisCoreRAK4631Board.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
 WisCoreRAK4631Board.menu.debug.l3.build.sysview_flags=-DCFG_SYSVIEW=1
 
-# Region Menu
-WisCoreRAK4631Board.menu.region.10=EU868
-WisCoreRAK4631Board.menu.region.10.build.region_flags=-DREGION_EU868
-WisCoreRAK4631Board.menu.region.11=US915
-WisCoreRAK4631Board.menu.region.11.build.region_flags=-DREGION_US915
-WisCoreRAK4631Board.menu.region.12=AU915
-WisCoreRAK4631Board.menu.region.12.build.region_flags=-DREGION_AU915
-WisCoreRAK4631Board.menu.region.13=KR920
-WisCoreRAK4631Board.menu.region.13.build.region_flags=-DREGION_KR920
-WisCoreRAK4631Board.menu.region.14=AS923
-WisCoreRAK4631Board.menu.region.14.build.region_flags=-DREGION_AS923
-WisCoreRAK4631Board.menu.region.15=IN865
-WisCoreRAK4631Board.menu.region.15.build.region_flags=-DREGION_IN865
-
 # ----------------------------------
 # WisBlock Core RAK4600 Board
 # ----------------------------------
@@ -119,62 +104,3 @@ WisCoreRAK4600Board.menu.debug.l2=Level 2 (Full Debug)
 WisCoreRAK4600Board.menu.debug.l2.build.debug_flags=-DCFG_DEBUG=2
 WisCoreRAK4600Board.menu.debug.l3=Level 3 (Segger SystemView)
 WisCoreRAK4600Board.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
-
-# Region Menu
-WisCoreRAK4600Board.menu.region.10=EU868
-WisCoreRAK4600Board.menu.region.10.build.region_flags=-DREGION_EU868
-WisCoreRAK4600Board.menu.region.11=US915
-WisCoreRAK4600Board.menu.region.11.build.region_flags=-DREGION_US915
-WisCoreRAK4600Board.menu.region.12=AU915
-WisCoreRAK4600Board.menu.region.12.build.region_flags=-DREGION_AU915
-WisCoreRAK4600Board.menu.region.13=KR920
-WisCoreRAK4600Board.menu.region.13.build.region_flags=-DREGION_KR920
-WisCoreRAK4600Board.menu.region.14=AS923
-WisCoreRAK4600Board.menu.region.14.build.region_flags=-DREGION_AS923
-WisCoreRAK4600Board.menu.region.15=IN865
-WisCoreRAK4600Board.menu.region.15.build.region_flags=-DREGION_IN865
-
-# ----------------------------------
-# WisTrio RAK5010 
-# ----------------------------------
-WisTrioRAK5010.name=WisTrio RAK5010 Board
-WisTrioRAK5010.bootloader.tool=bootburn
-
-# Upload
-WisTrioRAK5010.upload.tool=nrfutil
-WisTrioRAK5010.upload.protocol=nrfutil
-WisTrioRAK5010.upload.use_1200bps_touch=true
-WisTrioRAK5010.upload.wait_for_upload_port=true
-WisTrioRAK5010.upload.maximum_size=815104
-WisTrioRAK5010.upload.maximum_data_size=237568
-
-# Build
-WisTrioRAK5010.build.mcu=cortex-m4
-WisTrioRAK5010.build.f_cpu=64000000
-WisTrioRAK5010.build.board=WisTrioRAK5010
-WisTrioRAK5010.build.core=nRF5
-WisTrioRAK5010.build.variant=WisTrio_RAK5010_Board
-WisTrioRAK5010.build.usb_manufacturer="RAKwireless"
-WisTrioRAK5010.build.usb_product="WisTrio RAK5010 Board"
-WisTrioRAK5010.build.extra_flags=-DNRF52840_XXAA {build.flags.usb}
-WisTrioRAK5010.build.ldscript=nrf52840_s140_v6.ld
-WisTrioRAK5010.build.vid=0x239A
-WisTrioRAK5010.build.pid=0x8029
-
-# SofDevice Menu
-WisTrioRAK5010.menu.softdevice.s140v6=0.3.2 SoftDevice s140 6.1.1
-WisTrioRAK5010.menu.softdevice.s140v6.build.sd_name=s140
-WisTrioRAK5010.menu.softdevice.s140v6.build.sd_version=6.1.1
-WisTrioRAK5010.menu.softdevice.s140v6.build.sd_fwid=0x00B6
-
-# Debug Menu
-WisTrioRAK5010.menu.debug.l0=Level 0 (Release)
-WisTrioRAK5010.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
-WisTrioRAK5010.menu.debug.l1=Level 1 (Error Message)
-WisTrioRAK5010.menu.debug.l1.build.debug_flags=-DCFG_DEBUG=1
-WisTrioRAK5010.menu.debug.l2=Level 2 (Full Debug)
-WisTrioRAK5010.menu.debug.l2.build.debug_flags=-DCFG_DEBUG=2
-WisTrioRAK5010.menu.debug.l3=Level 3 (Segger SystemView)
-WisTrioRAK5010.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
-WisTrioRAK5010.menu.debug.l3.build.sysview_flags=-DCFG_SYSVIEW=1
-
