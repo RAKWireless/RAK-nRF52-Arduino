@@ -61,6 +61,10 @@ jobs:
         mv SdFat /home/runner/Arduino/libraries/SdFat
         git clone --quiet https://github.com/adafruit/Adafruit_LPS2X
         mv Adafruit_LPS2X /home/runner/Arduino/libraries/Adafruit_LPS2X
+        git clone --quiet https://github.com/adafruit/Adafruit_EPD
+        mv Adafruit_EPD /home/runner/Arduino/libraries/Adafruit_EPD
+        git clone --quiet https://github.com/adafruit/Adafruit_BusIO
+        mv Adafruit_BusIO /home/runner/Arduino/libraries/Adafruit_BusIO
 
         
     - name: test platforms
