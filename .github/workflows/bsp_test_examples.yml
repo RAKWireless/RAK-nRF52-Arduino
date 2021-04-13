@@ -47,6 +47,20 @@ jobs:
         mv TinyGPS /home/runner/Arduino/libraries/TinyGPS
         /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install U8g2
         /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install nRF52_OLED
+        git clone --quiet https://github.com/adafruit/Adafruit-GFX-Library
+        mv Adafruit-GFX-Library /home/runner/Arduino/libraries/Adafruit-GFX-Library
+        git clone --quiet https://github.com/sparkfun/SparkFun_MLX90632_Arduino_Library
+        mv SparkFun_MLX90632_Arduino_Library /home/runner/Arduino/libraries/SparkFun_MLX90632_Arduino_Library
+        git clone --quiet https://github.com/sparkfun/SparkFun_u-blox_GNSS_Arduino_Library
+        mv SparkFun_u-blox_GNSS_Arduino_Library /home/runner/Arduino/libraries/SparkFun_u-blox_GNSS_Arduino_Library
+        git clone --quiet https://github.com/adafruit/Adafruit_FRAM_I2C
+        mv Adafruit_FRAM_I2C /home/runner/Arduino/libraries/Adafruit_FRAM_I2C
+        git clone --quiet https://github.com/adafruit/Adafruit_SPIFlash
+        mv Adafruit_SPIFlash /home/runner/Arduino/libraries/Adafruit_SPIFlash
+        git clone --quiet https://github.com/adafruit/SdFat
+        mv SdFat /home/runner/Arduino/libraries/SdFat
+        git clone --quiet https://github.com/adafruit/Adafruit_LPS2X
+        mv Adafruit_LPS2X /home/runner/Arduino/libraries/Adafruit_LPS2X
 
         
     - name: test platforms
