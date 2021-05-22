@@ -57,8 +57,12 @@ void resumeLoop(void);
   #include "pulse.h"
   #include "HardwarePWM.h"
   #include "utility/SoftwareTimer.h"
-
   #include "Uart.h"
+#endif
+
+#ifdef USE_TINYUSB
+// Needed for declaring Serial
+#include "Adafruit_USBD_CDC.h"
 #endif
 
 #include "delay.h"
@@ -68,9 +72,6 @@ void resumeLoop(void);
 #include "utility/utilities.h"
 #include "utility/AdaCallback.h"
 
-#ifdef USE_TINYUSB
-  #include "Adafruit_TinyUSB_Core.h"
-#endif
 
 // Include board variant
 #include "variant.h"
@@ -134,9 +135,9 @@ void resumeLoop(void);
 #define bit(b) (1UL << (b))
 
 #ifdef NRF_P1
-#define digitalPinToPort(P)        ( (g_ADigitalPinMap[P] < 32) ? NRF_P0 : NRF_P1 )
+  #define digitalPinToPort(P)        ( (g_ADigitalPinMap[P] < 32) ? NRF_P0 : NRF_P1 )
 #else
-#define digitalPinToPort(P)        ( NRF_P0 )
+  #define digitalPinToPort(P)        ( NRF_P0 )
 #endif
 
 #define digitalPinToBitMask(P)     ( 1UL << ( g_ADigitalPinMap[P] < 32 ? g_ADigitalPinMap[P] : (g_ADigitalPinMap[P]-32) ) )

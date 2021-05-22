@@ -50,7 +50,8 @@ void BLECharacteristic::_init(void)
   varclr(&_properties);
 
   varclr(&_attr_meta);
-  _attr_meta.read_perm = _attr_meta.write_perm = BLE_SECMODE_OPEN;
+  _attr_meta.read_perm = BLE_SECMODE_OPEN;
+  _attr_meta.write_perm = BLE_SECMODE_OPEN;
   _attr_meta.vlen = 1;
   _attr_meta.vloc = BLE_GATTS_VLOC_STACK;
   _userbuf = NULL;
@@ -152,7 +153,7 @@ void BLECharacteristic::setBuffer(void* buf, uint16_t bufsize)
   _attr_meta.vloc = buf ? BLE_GATTS_VLOC_USER : BLE_GATTS_VLOC_STACK;
 }
 
-void BLECharacteristic::setPermission(BleSecurityMode read_perm, BleSecurityMode write_perm)
+void BLECharacteristic::setPermission(SecureMode_t read_perm, SecureMode_t write_perm)
 {
   memcpy(&_attr_meta.read_perm , &read_perm, 1);
   memcpy(&_attr_meta.write_perm, &write_perm, 1);
@@ -217,15 +218,19 @@ ble_gatts_char_handles_t BLECharacteristic::handles(void)
   return _handles;
 }
 
+// return the higher security mode
+static inline ble_gap_conn_sec_mode_t max_secmode(ble_gap_conn_sec_mode_t sm1, ble_gap_conn_sec_mode_t sm2)
+{
+  if ( (sm1.sm > sm2.sm) || (sm1.sm == sm2.sm && sm1.lv > sm2.lv) ) return sm1;
+  return sm2;
+}
+
 err_t BLECharacteristic::begin(void)
 {
   _service = BLEService::lastService;
 
   // Add UUID128 if needed
-  (void) uuid.begin();
-
-  // Permission is OPEN if passkey is disabled.
-//  if (!nvm_data.core.passkey_enable) BLE_GAP_CONN_SEC_MODE_SET_OPEN(&p_char_def->permission);
+  uuid.begin();
 
   // Correct Read/Write permission according to properties
   if ( !(_properties.read || _properties.notify || _properties.indicate ) )
@@ -236,6 +241,25 @@ err_t BLECharacteristic::begin(void)
   if ( !(_properties.write || _properties.write_wo_resp ) )
   {
     _attr_meta.write_perm = BLE_SECMODE_NO_ACCESS;
+  }
+
+  // Correct Read/Write permission according to parent service
+  // Use service permission if it has higher secure mode
+  SecureMode_t svc_rd_secmode, svc_wr_secmod;
+  _service->getPermission(&svc_rd_secmode, &svc_wr_secmod);
+
+  ble_gap_conn_sec_mode_t svc_rd_perm, svc_wr_perm;
+  memcpy(&svc_rd_perm, &svc_rd_secmode, 1);
+  memcpy(&svc_wr_perm, &svc_wr_secmod , 1);
+
+  if ( _attr_meta.read_perm.sm != 0 ) // skip no access
+  {
+    _attr_meta.read_perm = max_secmode(_attr_meta.read_perm, svc_rd_perm);
+  }
+
+  if ( _attr_meta.write_perm.sm != 0 ) // skip no access
+  {
+    _attr_meta.write_perm = max_secmode(_attr_meta.write_perm, svc_wr_perm);
   }
 
   /* CCCD attribute metadata */
@@ -332,7 +356,7 @@ err_t BLECharacteristic::begin(void)
   return ERROR_NONE;
 }
 
-err_t BLECharacteristic::addDescriptor(BLEUuid bleuuid, void const * content, uint16_t len, BleSecurityMode read_perm, BleSecurityMode write_perm)
+err_t BLECharacteristic::addDescriptor(BLEUuid bleuuid, void const * content, uint16_t len, SecureMode_t read_perm, SecureMode_t write_perm)
 {
   // Meta Data
   ble_gatts_attr_md_t meta;
@@ -724,7 +748,12 @@ bool BLECharacteristic::notify32(uint16_t conn_hdl, uint32_t num)
 
 bool BLECharacteristic::notify32(uint16_t conn_hdl, int num)
 {
-  return notify32((uint32_t) num, conn_hdl);
+  return notify(conn_hdl, (uint8_t*) &num, sizeof(num));
+}
+
+bool BLECharacteristic::notify32(uint16_t conn_hdl, float num)
+{
+  return notify(conn_hdl, (uint8_t*) &num, sizeof(num));
 }
 
 //--------------------------------------------------------------------+
@@ -760,6 +789,10 @@ bool BLECharacteristic::notify32(int num)
   return notify32(BLE_CONN_HANDLE_INVALID, num);
 }
 
+bool BLECharacteristic::notify32(float num)
+{
+  return notify32(BLE_CONN_HANDLE_INVALID, num);
+}
 
 /*------------------------------------------------------------------*/
 /* INDICATE multiple connections
@@ -850,6 +883,11 @@ bool BLECharacteristic::indicate32(uint16_t conn_hdl, int num)
   return indicate32(conn_hdl, (uint32_t) num);
 }
 
+bool BLECharacteristic::indicate32(uint16_t conn_hdl, float num)
+{
+  return indicate(conn_hdl, (uint8_t*) &num, sizeof(num));
+}
+
 /*------------------------------------------------------------------*/
 /* INDICATE single connections
  *------------------------------------------------------------------*/
@@ -879,6 +917,11 @@ bool BLECharacteristic::indicate32(uint32_t num)
 }
 
 bool BLECharacteristic::indicate32(int num)
+{
+  return indicate32(BLE_CONN_HANDLE_INVALID, num);
+}
+
+bool BLECharacteristic::indicate32(float num)
 {
   return indicate32(BLE_CONN_HANDLE_INVALID, num);
 }

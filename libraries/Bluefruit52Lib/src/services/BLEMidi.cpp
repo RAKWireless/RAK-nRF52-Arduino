@@ -160,6 +160,15 @@ err_t BLEMidi::begin(void)
 
   return ERROR_NONE;
 }
+  
+bool BLEMidi::beginTransmission(uint8_t type)
+{
+  return true;
+};
+
+void BLEMidi::endTransmission()
+{
+}
 
 /*------------------------------------------------------------------*/
 /* Callbacks

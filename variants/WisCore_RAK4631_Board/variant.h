@@ -80,10 +80,7 @@ extern "C"
 /*
  * Buttons
  */
-#define PIN_BUTTON1 11
-#define PIN_BUTTON2 12
-#define PIN_BUTTON3 24
-#define PIN_BUTTON4 25
+#define PIN_BUTTON1 33
 
 /*
  * Analog pins
