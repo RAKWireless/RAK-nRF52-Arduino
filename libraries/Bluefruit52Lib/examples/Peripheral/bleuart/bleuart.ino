@@ -34,7 +34,7 @@ void setup()
   Serial.println("---------------------------\n");
 
   // Setup the BLE LED to be enabled on CONNECT
-  // Note: This is actually the default behaviour, but provided
+  // Note: This is actually the default behavior, but provided
   // here in case you want to control this LED manually via PIN 19
   Bluefruit.autoConnLed(true);
 

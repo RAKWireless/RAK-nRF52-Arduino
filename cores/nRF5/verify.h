@@ -40,17 +40,15 @@
 #ifndef _VERIFY_H_
 #define _VERIFY_H_
 
-#include "compiler_macro.h"
+//--------------------------------------------------------------------+
+// Compile-time Assert
+//--------------------------------------------------------------------+
+#define VERIFY_STATIC(const_expr) _Static_assert(const_expr, "Assert failed")
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-//--------------------------------------------------------------------+
-// Compile-time Assert
-//--------------------------------------------------------------------+
-#define VERIFY_STATIC(const_expr) TU_VERIFY_STATIC(const_expr, "Assert failed")
 
 //--------------------------------------------------------------------+
 // VERIFY Helper
@@ -61,13 +59,13 @@ extern "C"
   static inline void VERIFY_MESS_impl(int32_t _status, const char* (*_fstr)(int32_t), const char* func_name, int line_number)
   {
       PRINTF("%s: %d: verify failed, error = ", func_name, line_number);
-      if (_fstr)
+      if (_fstr && _fstr(_status))
       {
         PRINTF(_fstr(_status));
       }
       else
       {
-        PRINTF("%ld", _status);
+        PRINTF("0x%lX (%ld)", _status, _status);
       }
       PRINTF("\n");
   }
@@ -107,9 +105,15 @@ extern "C"
  * - status value if called with 1 parameter e.g VERIFY_STATUS(status)
  * - 2 parameter if called with 2 parameters e.g VERIFY_STATUS(status, errorcode)
  */
-#define VERIFY_STATUS(...)  _GET_3RD_ARG(__VA_ARGS__, VERIFY_ERR_2ARGS, VERIFY_ERR_1ARGS)(__VA_ARGS__, dbg_err_str)
+#define VERIFY_STATUS(...)      _GET_3RD_ARG(__VA_ARGS__, VERIFY_ERR_2ARGS, VERIFY_ERR_1ARGS)(__VA_ARGS__, dbg_err_str)
 
-#define VERIFY_ERROR(...)   _GET_3RD_ARG(__VA_ARGS__, VERIFY_ERR_2ARGS, VERIFY_ERR_1ARGS)(__VA_ARGS__, NULL)
+#define PRINT_STATUS(_exp) do                            \
+{                                                        \
+  int32_t _status = (int32_t) _exp;                      \
+  if ( 0 != _status ) VERIFY_MESS(_status, dbg_err_str); \
+} while(0)                                               \
+
+#define VERIFY_ERROR(...)       _GET_3RD_ARG(__VA_ARGS__, VERIFY_ERR_2ARGS, VERIFY_ERR_1ARGS)(__VA_ARGS__, NULL)
 
 /*------------------------------------------------------------------*/
 /* VERIFY
@@ -125,8 +129,6 @@ extern "C"
  * - 2 parameter if called with 2 parameters e.g VERIFY(condition, errorcode)
  */
 #define VERIFY(...)  _GET_3RD_ARG(__VA_ARGS__, VERIFY_2ARGS, VERIFY_1ARGS)(__VA_ARGS__)
-
-// TODO VERIFY with final statement
 
 #ifdef __cplusplus
 }

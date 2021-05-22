@@ -23,9 +23,19 @@ menu.debug=Debug
 # WisBlock Core RAK4631 Board
 # ----------------------------------
 WisCoreRAK4631Board.name=WisBlock Core RAK4631 Board
-WisCoreRAK4631Board.bootloader.tool=bootburn
+# VID/PID for bootloader with/without UF2, Arduino + Circuitpython App
+WisCoreRAK4631Board.vid.0=0x239A
+WisCoreRAK4631Board.pid.0=0x8029
+WisCoreRAK4631Board.vid.1=0x239A
+WisCoreRAK4631Board.pid.1=0x0029
+WisCoreRAK4631Board.vid.2=0x239A
+WisCoreRAK4631Board.pid.2=0x002A
+WisCoreRAK4631Board.vid.3=0x239A
+WisCoreRAK4631Board.pid.3=0x802A
+
 
 # Upload
+WisCoreRAK4631Board.bootloader.tool=bootburn
 WisCoreRAK4631Board.upload.tool=nrfutil
 WisCoreRAK4631Board.upload.protocol=nrfutil
 WisCoreRAK4631Board.upload.use_1200bps_touch=true
@@ -33,8 +43,8 @@ WisCoreRAK4631Board.upload.wait_for_upload_port=true
 WisCoreRAK4631Board.upload.maximum_size=815104
 WisCoreRAK4631Board.upload.maximum_data_size=237568
 
-# Build
-WisCoreRAK4631Board.build.mcu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+# Build # -mfpu=fpv4-sp-d16 -mfloat-abi=hard fails to build with Crypto
+WisCoreRAK4631Board.build.mcu=cortex-m4
 WisCoreRAK4631Board.build.f_cpu=64000000
 WisCoreRAK4631Board.build.board=WisCore_RAK4631_Board
 WisCoreRAK4631Board.build.core=nRF5
@@ -56,7 +66,7 @@ WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_fwid=0x00B6
 WisCoreRAK4631Board.menu.debug.l0=Level 0 (Release)
 WisCoreRAK4631Board.menu.debug.l0.build.debug_flags=-DCFG_DEBUG=0
 WisCoreRAK4631Board.menu.debug.l1=Level 1 (Error Message)
-WisCoreRAK4631Board.debug.l1.build.debug_flags=-DCFG_DEBUG=1
+WisCoreRAK4631Board.menu.debug.l1.build.debug_flags=-DCFG_DEBUG=1
 WisCoreRAK4631Board.menu.debug.l2=Level 2 (Full Debug)
 WisCoreRAK4631Board.menu.debug.l2.build.debug_flags=-DCFG_DEBUG=2
 WisCoreRAK4631Board.menu.debug.l3=Level 3 (Segger SystemView)

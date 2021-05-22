@@ -74,6 +74,9 @@ class BLEMidi: public BLEService, public Stream
     void setWriteCallback(midi_write_cb_t fp);
     void autoMIDIread(void* midi_obj);
 
+    bool beginTransmission(uint8_t type);
+    void endTransmission();
+
     // Stream API for MIDI Interface
     virtual int    read       ( void );
     virtual size_t write      ( uint8_t b );
