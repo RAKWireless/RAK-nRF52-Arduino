@@ -3,6 +3,7 @@
 
 ## 0.22.0 - 2021.05.19
 
+_**All credits for this update go to the Adafruit team**_    
 This version implement comprehensive LESC and Legacy pairing using dynamic & static Passkey.
 
 - Support static passkey (Legacy only)
