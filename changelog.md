@@ -1,7 +1,7 @@
 
 # RAKwireless WisBlock BSP Changelog
 
-## 0.22.0 - 2021.05.19
+## 0.22.0 - 2021.05.22
 
 _**All credits for this update go to the Adafruit team**_    
 This version implement comprehensive LESC and Legacy pairing using dynamic & static Passkey.
