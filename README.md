@@ -24,7 +24,8 @@ To buy WisBlock modules please visit our [online store](https://store.rakwireles
   - [WisBlock Highlights](#wisblock-highlights)     
 
 - [BSP Installation](#bsp-installation)    
-  - [Stable Version](#stable-version)     
+  - [Arduino IDE](#arduino-ide)
+  - [USB driver](#usb-driver)
   - [Examples and Tutorials](#examples-and-tutorials)     
   - [Configuration](#configuration)     
 ----
@@ -81,7 +82,7 @@ WisBlock is created with 4 modular blocks.
 
 ## BSP Installation
 
-### Stable Version
+### Arduino IDE
 
 ----
 # ⚠️ WARNING    
@@ -94,6 +95,11 @@ Do _**NOT**_ install the Arduino IDE from the Microsoft App Store. Please instal
 
 #### (1) [Download and install the Arduino IDE](https://www.arduino.cc/en/Main/Software) (At least v1.6.12)
 #### (2) Follow [this guide](https://github.com/RAKWireless/RAKwireless-Arduino-BSP-Index) to install the required Board Support Package (BSP)    
+----
+### USB driver
+_**If your WisBlock RAK4631 is not recognized by Windows, you might need to install matching USB drivers.  
+Adafruit offers a package of USB drivers for different MCU's including the nRF52 chips. You can download it from [Adafruit Windows Drivers](https://github.com/adafruit/Adafruit_Windows_Drivers/releases)**_    
+
 ----
 ### Examples and Tutorials
 After you selected a RAK board you can see examples for all WisBlock modules
@@ -111,12 +117,12 @@ For more information about the examples and tutorials visit our [Github WisBlock
 ```
 $ pip3 install adafruit-nrfutil --user
 ```
-
+<!---
 ### Drivers
 
 - [SiLabs CP2104 driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) might be required for some modules.
 
-<!---
+
 # TODO Add bootloader support later
 ## Bootloader Support
 
