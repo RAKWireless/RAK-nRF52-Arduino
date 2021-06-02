@@ -24,6 +24,11 @@
    WB_A1      <->  P0.31/AIN7 (AnalogIn A7)
  */
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #include <bluefruit.h>
 
 #define MAX_COUNT_NUM (5)

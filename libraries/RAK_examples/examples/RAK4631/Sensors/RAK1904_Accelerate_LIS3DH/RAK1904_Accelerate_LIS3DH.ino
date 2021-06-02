@@ -7,7 +7,10 @@
    @copyright Copyright (c) 2020
 **/
 
-
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
 
 #include "SparkFunLIS3DH.h" //http://librarymanager/All#SparkFun-LIS3DH
 #include <Wire.h>

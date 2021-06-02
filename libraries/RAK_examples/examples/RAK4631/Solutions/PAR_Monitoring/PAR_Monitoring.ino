@@ -11,6 +11,11 @@
 #include <ArduinoModbus.h>   // Click here to get the library: http://librarymanager/All#ArduinoModbus
 #include <LoRaWan-RAK4630.h> // Click here to get the library: http://librarymanager/All#SX126x
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #include <SPI.h>
 
 // Check if the board has an LED port defined

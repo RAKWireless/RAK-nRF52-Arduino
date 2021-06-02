@@ -7,6 +7,11 @@
    @copyright Copyright (c) 2020
 **/
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #include <Wire.h>
 #include <ClosedCube_OPT3001.h> // Click here to get the library: http://librarymanager/All#OPT3001
 

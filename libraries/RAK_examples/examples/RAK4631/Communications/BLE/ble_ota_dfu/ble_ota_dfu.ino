@@ -22,6 +22,11 @@
 #include <Arduino.h>
 #include <bluefruit.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 // Forward declarations for functions
 void connect_callback(uint16_t conn_handle);
 void disconnect_callback(uint16_t conn_handle, uint8_t reason);

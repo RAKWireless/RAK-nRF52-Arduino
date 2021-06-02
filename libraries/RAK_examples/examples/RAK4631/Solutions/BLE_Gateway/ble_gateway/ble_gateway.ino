@@ -27,6 +27,11 @@
 #include <SPI.h>
 #include <bluefruit.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 // RAK4630 supply two LED
 // #ifndef LED_BUILTIN
 // #define LED_BUILTIN 35

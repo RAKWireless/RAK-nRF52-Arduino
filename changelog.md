@@ -1,6 +1,20 @@
 
 # RAKwireless WisBlock BSP Changelog
 
+## 0.22.1 - 2021.06.02
+
+- Add option to flash RAK4631 Bootloader directly from Arduino IDE
+- Updated examples to work with latest changes regarding TinyUSB
+_**All credits for this update go to the Adafruit team**_    
+- Fix warnings "changing start of section .bss by 4 bytes"
+- Fix various warnings when compiling with all warnings.
+- Bump included TinyUSB to 1.0.3
+- remove `Raytac MDBT50Q - RX` variant
+- Update included bootloader binaries from 0.3.2 to 0.5.0
+- Use CMSIS 5.4 header from tool package
+- Fix nrfjprog file not file on windows.
+- Update included adafruit-nrfutil binaries for windows and macos to version 0.5.3post16
+
 ## 0.22.0 - 2021.05.22
 
 _**All credits for this update go to the Adafruit team**_    

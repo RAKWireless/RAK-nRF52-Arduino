@@ -10,6 +10,11 @@
 
 #include <Arduino.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #define BUZZER_CONTROL  WB_IO1
 
 //This part is the note and rhythm of the song

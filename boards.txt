@@ -33,7 +33,6 @@ WisCoreRAK4631Board.pid.2=0x002A
 WisCoreRAK4631Board.vid.3=0x239A
 WisCoreRAK4631Board.pid.3=0x802A
 
-
 # Upload
 WisCoreRAK4631Board.bootloader.tool=bootburn
 WisCoreRAK4631Board.upload.tool=nrfutil

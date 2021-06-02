@@ -12,6 +12,10 @@
 #include <LoRaWan-RAK4630.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
 
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 35

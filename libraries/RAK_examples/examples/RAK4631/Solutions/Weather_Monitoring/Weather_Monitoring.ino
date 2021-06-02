@@ -28,6 +28,11 @@
 #include "SparkFun_SHTC3.h"   // Click here to get the library: http://librarymanager/All#SparkFun_SHTC3
 #include <ClosedCube_OPT3001.h> // Click here to get the library: http://librarymanager/All#OPT3001
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #define OPT3001_ADDRESS 0x44
 
 ClosedCube_OPT3001 opt3001;

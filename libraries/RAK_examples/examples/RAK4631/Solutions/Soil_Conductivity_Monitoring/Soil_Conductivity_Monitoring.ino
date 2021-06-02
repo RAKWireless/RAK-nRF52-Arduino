@@ -14,6 +14,11 @@
 #include <ArduinoModbus.h> //Click here to get the library: http://librarymanager/All#ArduinoModbus
 #include <SPI.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 // Check if the board has an LED port defined
 #ifndef LED_BUILTIN
 #define LED_BUILTIN 35

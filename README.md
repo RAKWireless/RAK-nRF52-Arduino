@@ -27,7 +27,7 @@ To buy WisBlock modules please visit our [online store](https://store.rakwireles
   - [Arduino IDE](#arduino-ide)
   - [USB driver](#usb-driver)
   - [Examples and Tutorials](#examples-and-tutorials)     
-  - [Configuration](#configuration)     
+  - [Bootloader Update](#bootloader-update)     
 ----
 
 ## Overview
@@ -123,20 +123,22 @@ $ pip3 install adafruit-nrfutil --user
 - [SiLabs CP2104 driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) might be required for some modules.
 
 
-# TODO Add bootloader support later
-## Bootloader Support
+-->
+## Bootloader Update
 
 ### Upgrade existing Bootloader
 
 Bluefruit's Bootloader is self-upgradable, you could upgrade to the latest Bootloader + Softdevice using the serial port within Arduino IDE.
 
-- Select `Tools > Board > Adafruit Bluefruit Feather52`
+- Select `Tools > Board > WisBlock Core RAK4631 Board`
 - Select `Tools > Programmer > Bootloader DFU for Bluefruit nRF52`
 - Select `Tools > Burn Bootloader`
 - **WAIT** until the process complete ~30 seconds
 
-**Note: close the Serial Monitor before you click "Burn Bootloader". Afterwards, you shouldn't close the Arduino IDE, unplug the Feather, launch Serial Monitor etc ... to abort the process. There is a high chance it will brick your device! Do this with care and caution.**
+**Note: close the Serial Monitor before you click "Burn Bootloader".**
+# _Afterwards, you shouldn't close the Arduino IDE, unplug the Feather, launch Serial Monitor etc ... to abort the process. There is a high chance it will brick your device! Do this with care and caution._
 
+<!--
 ### Burning new Bootloader
 
 To burn the bootloader from within the Arduino IDE, you will need the following tools installed

@@ -29,6 +29,11 @@
 #include "Wire.h"
 #include <TinyGPS.h>        //http://librarymanager/All#TinyGPS
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 LIS3DH SensorTwo(I2C_MODE, 0x18);
 
 TinyGPS gps;

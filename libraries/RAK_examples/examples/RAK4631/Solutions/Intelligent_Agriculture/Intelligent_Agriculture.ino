@@ -11,6 +11,11 @@
 #include <Arduino.h>
 #include <SPI.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #include <ArduinoModbus.h> //http://librarymanager/All#ArduinoModbus     //http://librarymanager/All#ArduinoRS485
 #include <LoRaWan-RAK4630.h> //http://librarymanager/All#SX126x
 

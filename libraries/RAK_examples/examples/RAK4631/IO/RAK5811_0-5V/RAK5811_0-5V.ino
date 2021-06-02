@@ -9,6 +9,11 @@
  
 #include <Arduino.h>
 
+#ifdef _VARIANT_RAK4630_
+// Required since TinyUSB is moved out of core folder
+#include "Adafruit_TinyUSB.h"
+#endif
+
 #define NO_OF_SAMPLES 32
 
 void setup()
