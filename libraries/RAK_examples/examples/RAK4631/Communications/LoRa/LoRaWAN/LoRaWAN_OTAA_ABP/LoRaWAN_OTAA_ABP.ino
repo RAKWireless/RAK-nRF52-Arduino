@@ -85,9 +85,6 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
-  // Initialize LoRa chip.
-  lora_rak4630_init();
-
   // Initialize Serial for debug output
   time_t timeout = millis();
   Serial.begin(115200);
@@ -102,6 +99,10 @@ void setup()
       break;
     }
   }
+
+  // Initialize LoRa chip.
+  lora_rak4630_init();
+
   Serial.println("=====================================");
   Serial.println("Welcome to RAK4630 LoRaWan!!!");
   if (doOTAA)
@@ -124,6 +125,9 @@ void setup()
     case LORAMAC_REGION_CN470:
       Serial.println("Region: CN470");
       break;
+  case LORAMAC_REGION_CN779:
+    Serial.println("Region: CN779");
+    break;
     case LORAMAC_REGION_EU433:
       Serial.println("Region: EU433");
       break;
@@ -138,6 +142,18 @@ void setup()
       break;
     case LORAMAC_REGION_US915:
       Serial.println("Region: US915");
+    break;
+  case LORAMAC_REGION_RU864:
+    Serial.println("Region: RU864");
+    break;
+  case LORAMAC_REGION_AS923_2:
+    Serial.println("Region: AS923-2");
+    break;
+  case LORAMAC_REGION_AS923_3:
+    Serial.println("Region: AS923-3");
+    break;
+  case LORAMAC_REGION_AS923_4:
+    Serial.println("Region: AS923-4");
       break;
   }
   Serial.println("=====================================");
