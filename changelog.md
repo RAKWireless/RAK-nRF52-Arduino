@@ -1,6 +1,29 @@
 
 # RAKwireless WisBlock BSP Changelog
 
+## 0.24.0 - 2021.07.19
+_**All credits for this update go to the Adafruit team**_   
+
+- Update included TinyUSB libraries to 1.3.0
+- Fix CryptoCell usage issue that prevent mcu to go to sleep causing high power consumption
+- separate pairing_passkey with and without arcada
+- Add back `Raytac MDBT50Q - RX` variant
+- Remove Bluefruit.setName() from most examples for it to use default board name
+- Update CMSIS from 5.4.0 to 5.7.0
+- Fix build with TensorFlowLite v2.4.0
+- Update included Adafruit_nRFCrypto to 0.0.5
+- Update included Adafruit_TinyUSB_Arduino to 1.1.0
+- Update include bootloader binaries to 0.6.0
+- Enable usage of DSP libmath
+- Added/Ported tf4micro-motion-kit project
+- Update BLEUuid
+  - Add from string style constructor like ArduinoBLE
+  - Add toString() function
+- Update BLECharacteristic
+  - Add constructor with properties
+  - Add constructor with max_len and fixed len
+  - Add writeFloat() and readFloat()
+
 ## 0.22.1 - 2021.06.02
 
 - Add option to flash RAK4631 Bootloader directly from Arduino IDE

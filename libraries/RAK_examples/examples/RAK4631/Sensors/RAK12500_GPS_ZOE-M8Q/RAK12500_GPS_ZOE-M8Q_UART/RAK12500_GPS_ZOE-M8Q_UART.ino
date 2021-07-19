@@ -7,11 +7,6 @@
    @copyright Copyright (c) 2021
 **/
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
 #include <SparkFun_u-blox_GNSS_Arduino_Library.h> //http://librarymanager/All#SparkFun_u-blox_GNSS
 
 SFE_UBLOX_GNSS g_myGNSS;

@@ -40,13 +40,9 @@ class Adafruit_nRFCrypto
     bool begin(void);
     void end(void);
 
-    void enable(void);
-    void disable(void);
-
     nRFCrypto_Random Random;
 
   private:
-    uint32_t _en_count;
     bool _begun;
 };
 

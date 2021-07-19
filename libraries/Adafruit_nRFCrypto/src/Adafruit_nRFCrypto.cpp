@@ -29,6 +29,8 @@
 #include "nrf_cc310/include/sns_silib.h"
 #include "Adafruit_nRFCrypto.h"
 
+#include <Adafruit_TinyUSB.h> // for Serial
+
 // Only nRF52840 has CC310
 #ifndef NRF_CRYPTOCELL
   #error CryptoCell CC310 is not supported on this board
@@ -53,26 +55,21 @@ Adafruit_nRFCrypto nRFCrypto;
 Adafruit_nRFCrypto::Adafruit_nRFCrypto(void)
 {
   _begun = false;
-  _en_count = 0;
 }
 
 bool Adafruit_nRFCrypto::begin(void)
 {
   // skip if already called begin before
   if (_begun) return true;
-  _begun = false;
+  _begun = true;
 
 #ifndef USE_CC310_LIB_NO_INTERRUPT
   NVIC_SetPriority(CRYPTOCELL_IRQn, 2);
   NVIC_EnableIRQ(CRYPTOCELL_IRQn);
 #endif
 
-  enable();
-
   VERIFY_ERROR(SaSi_LibInit(), false);
   VERIFY( Random.begin() );
-
-  disable();
 
   return true;
 }
@@ -83,32 +80,12 @@ void Adafruit_nRFCrypto::end(void)
   if (!_begun) return;
   _begun = false;
 
-  enable();
-
   SaSi_LibFini();
   Random.end();
 
 #ifndef USE_CC310_LIB_NO_INTERRUPT
   NVIC_DisableIRQ(CRYPTOCELL_IRQn);
 #endif
-
-  disable();
-}
-
-void Adafruit_nRFCrypto::enable(void)
-{
-  _en_count++;
-  NRF_CRYPTOCELL->ENABLE = 1;
-}
-
-void Adafruit_nRFCrypto::disable(void)
-{
-  _en_count--;
-
-  if ( _en_count == 0)
-  {
-    NRF_CRYPTOCELL->ENABLE = 0;
-  }
 }
 
 //--------------------------------------------------------------------+

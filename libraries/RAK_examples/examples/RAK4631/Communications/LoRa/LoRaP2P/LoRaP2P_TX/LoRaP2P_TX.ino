@@ -24,11 +24,6 @@
 #include <SX126x-RAK4630.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
 // Function declarations
 void OnTxDone(void);
 void OnTxTimeout(void);
