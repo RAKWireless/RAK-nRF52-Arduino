@@ -21,10 +21,13 @@ jobs:
 
     - name: extra libraries
       run: |
-        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install SX126x-Arduino
-        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install Arduino_LPS22HB
-        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install ArduinoRS485
-        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install ArduinoModbus
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install SX126x-Arduino
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install Arduino_LPS22HB
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install ArduinoRS485
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install ArduinoModbus
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install SD
+        git clone --quiet https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library --branch 1.3.0
+        mv Adafruit-MCP23017-Arduino-Library /home/runner/Arduino/libraries/Adafruit-MCP23017-Arduino-Library
         git clone --quiet https://github.com/sparkfun/SparkFun_SHTC3_Arduino_Library
         mv SparkFun_SHTC3_Arduino_Library /home/runner/Arduino/libraries/SparkFun_SHTC3_Arduino_Library
         git clone --quiet https://github.com/closedcube/ClosedCube_OPT3001_Arduino
@@ -45,8 +48,8 @@ jobs:
         mv SparkFun_SGP30_Arduino_Library /home/runner/Arduino/libraries/SparkFun_SGP30_Arduino_Library
         git clone --quiet https://github.com/neosarchizo/TinyGPS
         mv TinyGPS /home/runner/Arduino/libraries/TinyGPS
-        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install U8g2
-        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install nRF52_OLED
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install U8g2
+        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install nRF52_OLED
         git clone --quiet https://github.com/adafruit/Adafruit-GFX-Library
         mv Adafruit-GFX-Library /home/runner/Arduino/libraries/Adafruit-GFX-Library
         git clone --quiet https://github.com/sparkfun/SparkFun_MLX90632_Arduino_Library
@@ -55,7 +58,7 @@ jobs:
         mv SparkFun_u-blox_GNSS_Arduino_Library /home/runner/Arduino/libraries/SparkFun_u-blox_GNSS_Arduino_Library
         git clone --quiet https://github.com/adafruit/Adafruit_FRAM_I2C
         mv Adafruit_FRAM_I2C /home/runner/Arduino/libraries/Adafruit_FRAM_I2C
-        git clone --quiet https://github.com/adafruit/Adafruit_SPIFlash
+        git clone --quiet https://github.com/adafruit/Adafruit_SPIFlash --branch 3.5.1
         mv Adafruit_SPIFlash /home/runner/Arduino/libraries/Adafruit_SPIFlash
         git clone --quiet https://github.com/adafruit/SdFat
         mv SdFat /home/runner/Arduino/libraries/SdFat
@@ -65,6 +68,33 @@ jobs:
         mv Adafruit_EPD /home/runner/Arduino/libraries/Adafruit_EPD
         git clone --quiet https://github.com/adafruit/Adafruit_BusIO
         mv Adafruit_BusIO /home/runner/Arduino/libraries/Adafruit_BusIO
+        
+        git clone --quiet https://github.com/h2zero/NimBLE-Arduino
+        mv NimBLE-Arduino /home/runner/Arduino/libraries/NimBLE-Arduino
+        git clone --quiet https://github.com/emelianov/modbus-esp8266
+        mv modbus-esp8266 /home/runner/Arduino/libraries/modbus-esp8266
+        git clone --quiet https://github.com/marian-craciunescu/ESP32Ping
+        mv ESP32Ping /home/runner/Arduino/libraries/ESP32Ping
+        git clone --quiet https://github.com/marian-craciunescu/ESP32Ping
+        mv ESP32Ping /home/runner/Arduino/libraries/ESP32Ping
+        git clone --quiet https://github.com/knolleary/pubsubclient
+        mv pubsubclient /home/runner/Arduino/libraries/pubsubclient
+        git clone --quiet https://github.com/arduino-libraries/Arduino_JSON
+        mv Arduino_JSON /home/runner/Arduino/libraries/Arduino_JSON
+        git clone --quiet https://github.com/adafruit/Adafruit_FRAM_I2C
+        mv Adafruit_FRAM_I2C /home/runner/Arduino/libraries/Adafruit_FRAM_I2C
+        git clone --quiet https://github.com/melopero/Melopero_RV-3028_Arduino_Library
+        mv Melopero_RV-3028_Arduino_Library /home/runner/Arduino/libraries/Melopero_RV-3028_Arduino_Library
+        git clone --quiet https://github.com/janelia-arduino/PCA9685
+        mv PCA9685 /home/runner/Arduino/libraries/PCA9685
+        git clone --quiet https://github.com/RAKWireless/RAK13005-TLE7259-Library
+        mv RAK13005-TLE7259-Library /home/runner/Arduino/libraries/RAK13005-TLE7259-Library
+        git clone --quiet https://github.com/RAKWireless/RAK-MQx-Library
+        mv RAK-MQx-Library /home/runner/Arduino/libraries/RAK-MQx-Library
+        git clone --quiet https://github.com/RAKWireless/RAK14001-NCP5623-Library
+        mv RAK14001-NCP5623-Library /home/runner/Arduino/libraries/RAK14001-NCP5623-Library
+        git clone --quiet https://github.com/RAKWireless/RAK14002-CAP1293-Library
+        mv RAK14002-CAP1293-Library /home/runner/Arduino/libraries/RAK14002-CAP1293-Library
 
         
     - name: test platforms
