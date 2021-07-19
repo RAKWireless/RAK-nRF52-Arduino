@@ -7,11 +7,6 @@
    @copyright Copyright (c) 2020
 **/
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
 #include <Wire.h>			// Used to establied serial communication on the I2C bus
 #include <SparkFunTMP102.h> // Click here to get the library: http://librarymanager/All#SparkFun_TMP102
 

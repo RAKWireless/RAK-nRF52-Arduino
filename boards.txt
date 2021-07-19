@@ -16,7 +16,7 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-menu.softdevice=Bootloader
+menu.softdevice=SoftDevice
 menu.debug=Debug
 
 # ----------------------------------
@@ -42,7 +42,7 @@ WisCoreRAK4631Board.upload.wait_for_upload_port=true
 WisCoreRAK4631Board.upload.maximum_size=815104
 WisCoreRAK4631Board.upload.maximum_data_size=237568
 
-# Build # -mfpu=fpv4-sp-d16 -mfloat-abi=hard fails to build with Crypto
+# Build
 WisCoreRAK4631Board.build.mcu=cortex-m4
 WisCoreRAK4631Board.build.f_cpu=64000000
 WisCoreRAK4631Board.build.board=WisCore_RAK4631_Board
@@ -56,7 +56,7 @@ WisCoreRAK4631Board.build.vid=0x239A
 WisCoreRAK4631Board.build.pid=0x8029
 
 # SoftDevice Menu
-WisCoreRAK4631Board.menu.softdevice.s140v6=0.3.2 SoftDevice s140 6.1.1
+WisCoreRAK4631Board.menu.softdevice.s140v6=S140 6.1.1
 WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_name=s140
 WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_version=6.1.1
 WisCoreRAK4631Board.menu.softdevice.s140v6.build.sd_fwid=0x00B6

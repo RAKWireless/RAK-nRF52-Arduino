@@ -10,12 +10,7 @@
 
 #include <Arduino.h>
 #include "SdFat.h"
-#include "Adafruit_SPIFlash.h"  //Click here to get the library: http://librarymanager/All#Adafruit_SPIFlash
-
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
+#include "Adafruit_SPIFlash.h"  //Click here to get the library: http://librarymanager/All#Adafruit_SPIFlash          
 
 Adafruit_FlashTransport_SPI g_flashTransport(SS, SPI);  //Adafruit_FlashTransport_SPI flashTransport;                        
 

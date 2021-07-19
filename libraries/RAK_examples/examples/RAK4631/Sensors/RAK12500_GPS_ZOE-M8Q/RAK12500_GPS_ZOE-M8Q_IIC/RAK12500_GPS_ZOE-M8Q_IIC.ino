@@ -6,10 +6,6 @@
    @date 2021-1-28
    @copyright Copyright (c) 2021
 **/
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
 
 #include <Wire.h> //Needed for I2C to GNSS
 

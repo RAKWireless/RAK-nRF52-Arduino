@@ -48,29 +48,21 @@ nRFCrypto_Hash::nRFCrypto_Hash(void)
 
 bool nRFCrypto_Hash::begin(CRYS_HASH_OperationMode_t mode)
 {
-  nRFCrypto.enable();
-
   VERIFY_ERROR( CRYS_HASH_Init(&_context, mode), false );
   if ( mode < CRYS_HASH_NumOfModes ) _digest_len = digest_len_arr[mode];
 
-  nRFCrypto.disable();
   return true;
 }
 
 bool nRFCrypto_Hash::update(uint8_t data[], size_t size)
 {
-  nRFCrypto.enable();
   VERIFY_ERROR( CRYS_HASH_Update(&_context, data, size), false );
-  nRFCrypto.disable();
   return true;
 }
 
 uint8_t nRFCrypto_Hash::end(uint32_t result[16])
 {
-  nRFCrypto.enable();
   VERIFY_ERROR( CRYS_HASH_Finish(&_context, result), 0);
-  nRFCrypto.disable();
-
   return _digest_len;
 }
 

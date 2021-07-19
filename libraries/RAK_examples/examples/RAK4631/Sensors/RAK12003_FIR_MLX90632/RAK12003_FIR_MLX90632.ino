@@ -7,13 +7,8 @@
  * @date 2021-01-20
  * 
  * @copyright Copyright (c) 2021
- */
-
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
+ */ 
+ 
 #include <Wire.h>
 
 #include "SparkFun_MLX90632_Arduino_Library.h"   // Click here to get the library: http://librarymanager/AllSparkFun_MLX90632_Arduino_Library

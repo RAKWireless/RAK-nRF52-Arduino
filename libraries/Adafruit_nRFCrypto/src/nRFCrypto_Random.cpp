@@ -39,17 +39,12 @@ bool nRFCrypto_Random::begin(void)
 {
   // skip if already called begin before
   if (_begun) return true;
-  _begun = false;
+  _begun = true;
 
   CRYS_RND_WorkBuff_t* workbuf = (CRYS_RND_WorkBuff_t*) rtos_malloc(sizeof(CRYS_RND_WorkBuff_t));
   VERIFY(workbuf);
 
-  nRFCrypto.enable();
-
   uint32_t err = CRYS_RndInit(&_state, workbuf);
-
-  nRFCrypto.disable();
-
   rtos_free(workbuf);
 
   VERIFY_ERROR(err, false);
@@ -62,15 +57,9 @@ void nRFCrypto_Random::end(void)
   if (!_begun) return;
   _begun = false;
 
-  nRFCrypto.enable();
-
   uint32_t err = CRYS_RND_UnInstantiation(&_state);
-
-  nRFCrypto.disable();
-
   VERIFY_ERROR(err, );
 }
-
 
 CRYS_RND_State_t* nRFCrypto_Random::getContext(void)
 {
@@ -79,13 +68,7 @@ CRYS_RND_State_t* nRFCrypto_Random::getContext(void)
 
 bool nRFCrypto_Random::addAdditionalInput(uint8_t* input, uint16_t size)
 {
-  nRFCrypto.enable();
-
-  uint32_t err = CRYS_RND_AddAdditionalInput(&_state, input, size);
-
-  nRFCrypto.disable();
-
-  VERIFY_ERROR(err, false);
+  VERIFY_ERROR(CRYS_RND_AddAdditionalInput(&_state, input, size), false);
   return true;
 }
 
@@ -94,12 +77,7 @@ bool nRFCrypto_Random::reseed(void)
   CRYS_RND_WorkBuff_t* workbuf = (CRYS_RND_WorkBuff_t*) rtos_malloc(sizeof(CRYS_RND_WorkBuff_t));
   VERIFY(workbuf);
 
-  nRFCrypto.enable();
-
   uint32_t err = CRYS_RND_Reseeding(&_state, workbuf);
-
-  nRFCrypto.disable();
-
   rtos_free(workbuf);
 
   VERIFY_ERROR(err, false);
@@ -108,24 +86,12 @@ bool nRFCrypto_Random::reseed(void)
 
 bool nRFCrypto_Random::generate(uint8_t* buf, uint16_t bufsize)
 {
-  nRFCrypto.enable();
-
-  uint32_t err = CRYS_RND_GenerateVector(&_state, bufsize, buf);
-
-  nRFCrypto.disable();
-
-  VERIFY_ERROR(err, false);
+  VERIFY_ERROR(CRYS_RND_GenerateVector(&_state, bufsize, buf), false);
   return true;
 }
 
 bool nRFCrypto_Random::generateInRange(uint8_t* buf, uint32_t bitsize, uint8_t* max)
 {
-  nRFCrypto.enable();
-
-  uint32_t err = CRYS_RND_GenerateVectorInRange(&_state, CRYS_RND_GenerateVector, bitsize, max, buf);
-
-  nRFCrypto.disable();
-
-  VERIFY_ERROR(err, false);
+  VERIFY_ERROR(CRYS_RND_GenerateVectorInRange(&_state, CRYS_RND_GenerateVector, bitsize, max, buf), false);
   return true;
 }

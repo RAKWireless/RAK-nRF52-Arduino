@@ -12,11 +12,6 @@
 #include <Adafruit_BME680.h> // Click to install library: http://librarymanager/All#Adafruit_BME680
 #include <U8g2lib.h>		   // Click to install library: http://librarymanager/All#u8g2
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0);
 Adafruit_BME680 bme;
 
@@ -109,9 +104,9 @@ void setup()
 
 void loop()
 {
-  if (! bme.performReading()) {
+  if (! bme.performReading()) 
+  {
     Serial.println("Failed to perform reading :(");
-    return;
   }
   bme680_get();
   delay(5000);

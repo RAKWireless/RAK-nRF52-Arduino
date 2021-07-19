@@ -47,9 +47,12 @@ void TinyUSB_Device_Task(void) {
 #endif
 
 void TinyUSB_Device_FlushCDC(void) {
-  // TODO multiple CDCs
-  tud_cdc_n_write_flush(0);
+  uint8_t const cdc_instance = Adafruit_USBD_CDC::getInstanceCount();
+  for (uint8_t instance = 0; instance < cdc_instance; instance++) {
+    tud_cdc_n_write_flush(instance);
+  }
 }
-}
+
+} // extern C
 
 #endif
