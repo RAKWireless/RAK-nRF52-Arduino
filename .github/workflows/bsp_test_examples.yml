@@ -21,11 +21,11 @@ jobs:
 
     - name: extra libraries
       run: |
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install SX126x-Arduino
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install Arduino_LPS22HB
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install ArduinoRS485
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install ArduinoModbus
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install SD
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install SX126x-Arduino
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install Arduino_LPS22HB
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install ArduinoRS485
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install ArduinoModbus
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install SD
         git clone --quiet https://github.com/adafruit/Adafruit-MCP23017-Arduino-Library --branch 1.3.0
         mv Adafruit-MCP23017-Arduino-Library /home/runner/Arduino/libraries/Adafruit-MCP23017-Arduino-Library
         git clone --quiet https://github.com/sparkfun/SparkFun_SHTC3_Arduino_Library
@@ -48,8 +48,8 @@ jobs:
         mv SparkFun_SGP30_Arduino_Library /home/runner/Arduino/libraries/SparkFun_SGP30_Arduino_Library
         git clone --quiet https://github.com/neosarchizo/TinyGPS
         mv TinyGPS /home/runner/Arduino/libraries/TinyGPS
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install U8g2
-        /home/runner/work/WisBlock/WisBlock/bin/arduino-cli lib install nRF52_OLED
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install U8g2
+        /home/runner/work/RAK-nRF52-Arduino/RAK-nRF52-Arduino/bin/arduino-cli lib install nRF52_OLED
         git clone --quiet https://github.com/adafruit/Adafruit-GFX-Library
         mv Adafruit-GFX-Library /home/runner/Arduino/libraries/Adafruit-GFX-Library
         git clone --quiet https://github.com/sparkfun/SparkFun_MLX90632_Arduino_Library
