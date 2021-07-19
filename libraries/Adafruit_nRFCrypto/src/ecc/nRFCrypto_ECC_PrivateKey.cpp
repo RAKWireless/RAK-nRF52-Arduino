@@ -40,11 +40,7 @@ nRFCrypto_ECC_PrivateKey::nRFCrypto_ECC_PrivateKey(void)
 
 bool nRFCrypto_ECC_PrivateKey::begin(CRYS_ECPKI_DomainID_t id)
 {
-  nRFCrypto.enable();
-
   _domain = CRYS_ECPKI_GetEcDomain(id);
-
-  nRFCrypto.disable();
   return _domain != NULL;
 }
 
@@ -57,25 +53,13 @@ void nRFCrypto_ECC_PrivateKey::end(void)
 // return raw buffer size = keysize + 1 (header)
 uint32_t nRFCrypto_ECC_PrivateKey::toRaw(uint8_t* buffer, uint32_t bufsize)
 {
-  nRFCrypto.enable();
-
-  uint32_t err = CRYS_ECPKI_ExportPrivKey(&_key, buffer, &bufsize);
-
-  nRFCrypto.disable();
-
-  VERIFY_CRYS(err, 0);
+  VERIFY_CRYS(CRYS_ECPKI_ExportPrivKey(&_key, buffer, &bufsize), 0);
   return bufsize;
 }
 
 // Build public key from raw bytes in Big Endian
 bool nRFCrypto_ECC_PrivateKey::fromRaw(uint8_t* buffer, uint32_t bufsize)
 {
-  nRFCrypto.enable();
-
-  uint32_t err = CRYS_ECPKI_BuildPrivKey(_domain, buffer, bufsize, &_key);
-
-  nRFCrypto.disable();
-
-  VERIFY_CRYS(err, false);
+  VERIFY_CRYS(CRYS_ECPKI_BuildPrivKey(_domain, buffer, bufsize, &_key), false);
   return true;
 }

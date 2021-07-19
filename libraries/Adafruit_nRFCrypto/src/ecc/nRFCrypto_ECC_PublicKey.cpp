@@ -40,11 +40,7 @@ nRFCrypto_ECC_PublicKey::nRFCrypto_ECC_PublicKey(void)
 
 bool nRFCrypto_ECC_PublicKey::begin(CRYS_ECPKI_DomainID_t id)
 {
-  nRFCrypto.enable();
-
   _domain = CRYS_ECPKI_GetEcDomain(id);
-
-  nRFCrypto.disable();
   return _domain != NULL;
 }
 
@@ -57,13 +53,7 @@ void nRFCrypto_ECC_PublicKey::end(void)
 // return raw buffer size = keysize + 1 (header)
 uint32_t nRFCrypto_ECC_PublicKey::toRaw(uint8_t* buffer, uint32_t bufsize)
 {
-  nRFCrypto.enable();
-
-  uint32_t err = CRYS_ECPKI_ExportPublKey(&_key, CRYS_EC_PointUncompressed, buffer, &bufsize);
-
-  nRFCrypto.disable();
-
-  VERIFY_CRYS(err, 0);
+  VERIFY_CRYS(CRYS_ECPKI_ExportPublKey(&_key, CRYS_EC_PointUncompressed, buffer, &bufsize), 0);
   return bufsize;
 }
 
@@ -73,11 +63,7 @@ bool nRFCrypto_ECC_PublicKey::fromRaw(uint8_t* buffer, uint32_t bufsize)
   CRYS_ECPKI_BUILD_TempData_t* tempbuf = (CRYS_ECPKI_BUILD_TempData_t*) rtos_malloc( sizeof(CRYS_ECPKI_BUILD_TempData_t) );
   VERIFY(tempbuf);
 
-  nRFCrypto.enable();
-
   uint32_t err = CRYS_ECPKI_BuildPublKeyPartlyCheck(_domain, buffer, bufsize, &_key, tempbuf);
-
-  nRFCrypto.disable();
 
   rtos_free(tempbuf);
 

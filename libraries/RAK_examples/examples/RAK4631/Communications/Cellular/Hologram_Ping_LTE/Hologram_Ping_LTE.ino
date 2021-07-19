@@ -21,10 +21,7 @@
    SPI_CS    <->  P0.26 (Arduino GPIO number 26) 
  */
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
+#include "SPI.h"
 
 #define BG77_POWER_KEY 17
 char cArr[128] = {0};

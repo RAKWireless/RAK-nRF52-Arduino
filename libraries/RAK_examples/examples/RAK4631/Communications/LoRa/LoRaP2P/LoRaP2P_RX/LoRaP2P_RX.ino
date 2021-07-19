@@ -23,11 +23,6 @@
 #include <SX126x-RAK4630.h> //http://librarymanager/All#SX126x
 #include <SPI.h>
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
 // Function declarations
 void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t snr);
 void OnRxTimeout(void);
@@ -57,9 +52,6 @@ static uint8_t RcvBuffer[64];
 void setup()
 {
 
-	// Initialize LoRa chip.
-	lora_rak4630_init();
-
 	// Initialize Serial for debug output
 	time_t timeout = millis();
 	Serial.begin(115200);
@@ -74,6 +66,11 @@ void setup()
             break;
         }
 	}
+
+
+	// Initialize LoRa chip.
+	lora_rak4630_init();
+
 	Serial.println("=====================================");
 	Serial.println("LoRaP2P Rx Test");
 	Serial.println("=====================================");

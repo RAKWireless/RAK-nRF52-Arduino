@@ -7,10 +7,8 @@
    @copyright Copyright (c) 2020
 **/
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
+
+#include "SPI.h"
 
 #define BG77_POWER_KEY WB_IO1
 #define BG77_GPS_ENABLE WB_IO2
@@ -28,22 +26,22 @@ String gps_data = "";
 
 void setup()
 {
-	time_t serial_timeout = millis();
-	Serial.begin(115200);
-	while (!Serial)
-	{
-		if ((millis() - serial_timeout) < 5000)
-		{
-        delay(100);
+  time_t serial_timeout = millis();
+  Serial.begin(115200);
+  while (!Serial)
+  {
+    if ((millis() - serial_timeout) < 5000)
+    {
+      delay(100);
     }
     else
     {
-        break;
+      break;
     }
-	}
-	Serial.println("RAK11200 Cellular TEST With Hologram sim card!");
+  }
+  Serial.println("RAK11200 Cellular TEST With Hologram sim card!");
 
-	//BG77 init , Check if the modem is already awake
+  //BG77 init , Check if the modem is already awake
   time_t timeout = millis();
   bool moduleSleeps = true;
   Serial1.begin(115200);
@@ -76,18 +74,18 @@ void setup()
   Serial.println("BG77 power up!");
 
   //active and join to the net, this part may depend on some information of your operator.
-	bg77_at("AT+CFUN=1,0", 500);
-	delay(2000);
-	bg77_at("AT+CPIN?", 500);
-	delay(2000);
-	bg77_at("AT+QNWINFO", 500);
-	delay(2000);
-	bg77_at("AT+QCSQ", 500);
-	delay(2000);
-	bg77_at("AT+CSQ", 500);
-	delay(2000);
-	bg77_at("AT+QIACT=1", 3000);
-	delay(2000);
+  bg77_at("AT+CFUN=1,0", 500);
+  delay(2000);
+  bg77_at("AT+CPIN?", 500);
+  delay(2000);
+  bg77_at("AT+QNWINFO", 500);
+  delay(2000);
+  bg77_at("AT+QCSQ", 500);
+  delay(2000);
+  bg77_at("AT+CSQ", 500);
+  delay(2000);
+  bg77_at("AT+QIACT=1", 3000);
+  delay(2000);
 
   //open tcp link with Hologram server
   bg77_at("AT+QIOPEN=1,0,\"TCP\",\"cloudsocket.hologram.io\",9999,0,1", 5000);
@@ -146,23 +144,23 @@ void get_gps()
 //this function is suitable for most AT commands of bg96. e.g. bg96_at("ATI")
 void bg77_at(char *at, uint16_t timeout)
 {
-	char tmp[256] = {0};
-	int len = strlen(at);
-	strncpy(tmp, at, len);
-	uint16_t t = timeout;
-	tmp[len] = '\r';
-	Serial1.write(tmp);
-	delay(10);
-	while (t--)
-	{
-		if (Serial1.available())
-		{
-			bg77_rsp += char(Serial1.read());
-		}
-		delay(1);
-	}
-	Serial.println(bg77_rsp);
-	bg77_rsp = "";
+  char tmp[256] = {0};
+  int len = strlen(at);
+  strncpy(tmp, at, len);
+  uint16_t t = timeout;
+  tmp[len] = '\r';
+  Serial1.write(tmp);
+  delay(10);
+  while (t--)
+  {
+    if (Serial1.available())
+    {
+      bg77_rsp += char(Serial1.read());
+    }
+    delay(1);
+  }
+  Serial.println(bg77_rsp);
+  bg77_rsp = "";
 }
 
 void send_test_data()
@@ -192,8 +190,8 @@ void send_test_data()
 
 void loop()
 {
-	Serial.println("Send test data to Hologram via TCP!");
-	send_test_data();
+  Serial.println("Send test data to Hologram via TCP!");
+  send_test_data();
   //consider the gps fix time, interval should be long
   delay(300000);
 }

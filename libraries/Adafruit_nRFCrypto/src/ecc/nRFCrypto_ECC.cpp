@@ -42,14 +42,9 @@ bool nRFCrypto_ECC::genKeyPair(nRFCrypto_ECC_PrivateKey& private_key, nRFCrypto_
   CRYS_ECPKI_KG_TempData_t* tempbuf = (CRYS_ECPKI_KG_TempData_t*) rtos_malloc( sizeof(CRYS_ECPKI_KG_TempData_t) );
   VERIFY(tempbuf);
 
-  nRFCrypto.enable();
-
   uint32_t err = CRYS_ECPKI_GenKeyPair(nRFCrypto.Random.getContext(), CRYS_RND_GenerateVector, private_key.getDomain(),
                                        &private_key._key, &public_key._key,
                                        tempbuf, NULL);
-
-  nRFCrypto.disable();
-
   rtos_free(tempbuf);
 
   VERIFY_CRYS(err, false);
@@ -61,11 +56,7 @@ uint32_t nRFCrypto_ECC::SVDP_DH(nRFCrypto_ECC_PrivateKey& private_key, nRFCrypto
   CRYS_ECDH_TempData_t* tempbuf = (CRYS_ECDH_TempData_t *) rtos_malloc(sizeof(CRYS_ECDH_TempData_t));
   VERIFY(tempbuf);
 
-  nRFCrypto.enable();
-
   uint32_t err = CRYS_ECDH_SVDP_DH(&peer_pubkey._key, &private_key._key, shared_secret, &bufsize, tempbuf);
-
-  nRFCrypto.disable();
 
   rtos_free(tempbuf);
 

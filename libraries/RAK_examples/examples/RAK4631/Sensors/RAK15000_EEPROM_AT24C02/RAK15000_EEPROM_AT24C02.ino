@@ -6,12 +6,7 @@
  * @date 2021-01-28
  * @copyright Copyright (c) 2020
  */
-
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
+ 
 #include <Wire.h>
 #include "Adafruit_EEPROM_I2C.h"  // Click here to get the library: http://librarymanager/All#Adafruit_EEPROM_I2C
 
@@ -64,7 +59,7 @@ void setup(void) {
    {
      g_random_addr = random(0, MAXADD);
      g_write_data = random(1,255);        
-     i2ceeprom.write8(g_random_addr,g_write_data);
+     i2ceeprom.write(g_random_addr,g_write_data);
   
      Serial.print("Random write address is: ");
      Serial.printf("%d\n",g_random_addr);
@@ -72,7 +67,7 @@ void setup(void) {
      Serial.print("Random write number is: ");
      Serial.printf("%d\n",g_write_data);
   
-     g_read_data = i2ceeprom.read8(g_random_addr);
+     g_read_data = i2ceeprom.read(g_random_addr);
      Serial.print("Read data from address is: ");   
      Serial.printf("%d\n",g_read_data);    
      if(g_read_data == g_write_data)

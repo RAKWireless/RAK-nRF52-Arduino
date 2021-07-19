@@ -23,11 +23,6 @@
 #include <Arduino.h>
 #include <bluefruit.h>
 
-#ifdef _VARIANT_RAK4630_
-// Required since TinyUSB is moved out of core folder
-#include "Adafruit_TinyUSB.h"
-#endif
-
 #define PIN_VBAT WB_A0
 
 uint32_t vbat_pin = PIN_VBAT;
