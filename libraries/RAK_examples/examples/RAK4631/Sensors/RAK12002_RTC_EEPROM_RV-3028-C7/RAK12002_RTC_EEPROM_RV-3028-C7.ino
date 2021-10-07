@@ -33,7 +33,9 @@ void setup()
     }
   }
 
-  rtc.initDevice(); // First initialize and create the rtc device
+  // First initialize and create the rtc device
+  Wire.begin();
+  rtc.initI2C();
 
   rtc.useEEPROM();  // Setup the device to use the EEPROM memory
 

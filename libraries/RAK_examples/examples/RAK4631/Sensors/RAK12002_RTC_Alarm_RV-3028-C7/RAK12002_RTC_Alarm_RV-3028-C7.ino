@@ -47,7 +47,9 @@ void setup()
     }
   }
   
-  rtc.initDevice(); // First initialize and create the rtc device
+  // First initialize and create the rtc device
+  Wire.begin();
+  rtc.initI2C();
  
   rtc.set24HourMode();  // Set the device to use the 24hour format (default) instead of the 12 hour format
 

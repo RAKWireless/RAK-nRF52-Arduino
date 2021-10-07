@@ -7,6 +7,7 @@
    @copyright Copyright (c) 2020
 **/
 
+//#include <Adafruit_TinyUSB.h>
 #include <TinyGPS.h>    //http://librarymanager/All#TinyGPS
 
 TinyGPS gps;
