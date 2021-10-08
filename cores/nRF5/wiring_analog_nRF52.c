@@ -30,6 +30,7 @@ extern "C" {
 
 static uint32_t saadcReference = SAADC_CH_CONFIG_REFSEL_Internal;
 static uint32_t saadcGain      = SAADC_CH_CONFIG_GAIN_Gain1_6;
+static uint32_t saadcSampleTime = SAADC_CH_CONFIG_TACQ_3us;
 
 static bool saadcBurst = SAADC_CH_CONFIG_BURST_Disabled;
 
@@ -140,6 +141,28 @@ void analogOversampling( uint32_t ulOversampling )
 	}
 }
 
+void analogSampleTime( uint8_t sTime)
+{
+  saadcSampleTime = SAADC_CH_CONFIG_TACQ_3us; // default is 3 us
+  switch (sTime) {
+    case 5:
+      saadcSampleTime = SAADC_CH_CONFIG_TACQ_5us;
+      break;
+    case 10:
+      saadcSampleTime = SAADC_CH_CONFIG_TACQ_10us;
+      break;
+    case 15:
+      saadcSampleTime = SAADC_CH_CONFIG_TACQ_15us;
+      break;
+    case 20:
+      saadcSampleTime = SAADC_CH_CONFIG_TACQ_20us;
+      break;
+    case 40:
+      saadcSampleTime = SAADC_CH_CONFIG_TACQ_40us;
+      break;
+  }
+}
+
 static uint32_t analogRead_internal( uint32_t psel )
 {
   uint32_t saadcResolution;
@@ -171,7 +194,7 @@ static uint32_t analogRead_internal( uint32_t psel )
                             | ((SAADC_CH_CONFIG_RESP_Bypass   << SAADC_CH_CONFIG_RESN_Pos)   & SAADC_CH_CONFIG_RESN_Msk)
                             | ((saadcGain                     << SAADC_CH_CONFIG_GAIN_Pos)   & SAADC_CH_CONFIG_GAIN_Msk)
                             | ((saadcReference                << SAADC_CH_CONFIG_REFSEL_Pos) & SAADC_CH_CONFIG_REFSEL_Msk)
-                            | ((SAADC_CH_CONFIG_TACQ_3us      << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
+                            | ((saadcSampleTime               << SAADC_CH_CONFIG_TACQ_Pos)   & SAADC_CH_CONFIG_TACQ_Msk)
                             | ((SAADC_CH_CONFIG_MODE_SE       << SAADC_CH_CONFIG_MODE_Pos)   & SAADC_CH_CONFIG_MODE_Msk)
                             | ((saadcBurst                    << SAADC_CH_CONFIG_BURST_Pos)   & SAADC_CH_CONFIG_BURST_Msk);
   NRF_SAADC->CH[0].PSELN = psel;
@@ -259,6 +282,25 @@ uint32_t analogRead( uint32_t ulPin )
 uint32_t analogReadVDD( void )
 {
   return analogRead_internal(SAADC_CH_PSELP_PSELP_VDD);
+}
+
+void analogCalibrateOffset( void )
+{
+  // Enable the SAADC
+  NRF_SAADC->ENABLE = 0x01;
+
+  // Be sure the done flag is cleared, then trigger offset calibration
+  NRF_SAADC->EVENTS_CALIBRATEDONE = 0x00;
+  NRF_SAADC->TASKS_CALIBRATEOFFSET = 0x01;
+
+  // Wait for completion
+  while (!NRF_SAADC->EVENTS_CALIBRATEDONE);
+
+  // Clear the done flag  (really shouldn't have to do this both times)
+  NRF_SAADC->EVENTS_CALIBRATEDONE = 0x00;
+
+  // Disable the SAADC
+  NRF_SAADC->ENABLE = 0x00;
 }
 
 #ifdef __cplusplus

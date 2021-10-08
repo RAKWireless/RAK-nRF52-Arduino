@@ -24,10 +24,9 @@ To buy WisBlock modules please visit our [online store](https://store.rakwireles
   - [WisBlock Highlights](#wisblock-highlights)     
 
 - [BSP Installation](#bsp-installation)    
-  - [Arduino IDE](#arduino-ide)
-  - [USB driver](#usb-driver)
+  - [Stable Version](#stable-version)     
   - [Examples and Tutorials](#examples-and-tutorials)     
-  - [Bootloader Update](#bootloader-update)     
+  - [Configuration](#configuration)     
 ----
 
 ## Overview
@@ -66,7 +65,7 @@ WisBlock is created with 4 modular blocks.
 #### WisBlock Core
 
 - WisBlock Core is the **data processing center** of WisBlock.
-- Some WisBlock Core modules also offer LoRa®/LoRaWan® communication and additional communication means like Bluetooth, Bluetooth Low Energy, or Wi-Fi.
+- Some WisBlock Core modules also offer LoRa�/LoRaWan� communication and additional communication means like Bluetooth, Bluetooth Low Energy, or Wi-Fi.
 
 #### WisBlock Sensor
 
@@ -82,24 +81,19 @@ WisBlock is created with 4 modular blocks.
 
 ## BSP Installation
 
-### Arduino IDE
+### Stable Version
 
 ----
-# ⚠️ WARNING    
+# ?? WARNING    
 _**If you are using Windows 10**_.    
 Do _**NOT**_ install the Arduino IDE from the Microsoft App Store. Please install the original Arduino IDE from the [Arduino official website](https://www.arduino.cc/en/Main/Software)!. The Arduino app from the Microsoft App Store has problems to use third party Board Support Packages.
 :::
 
 ----
-
+   
 
 #### (1) [Download and install the Arduino IDE](https://www.arduino.cc/en/Main/Software) (At least v1.6.12)
 #### (2) Follow [this guide](https://github.com/RAKWireless/RAKwireless-Arduino-BSP-Index) to install the required Board Support Package (BSP)    
-----
-### USB driver
-_**If your WisBlock RAK4631 is not recognized by Windows, you might need to install matching USB drivers.  
-Adafruit offers a package of USB drivers for different MCU's including the nRF52 chips. You can download it from [Adafruit Windows Drivers](https://github.com/adafruit/Adafruit_Windows_Drivers/releases)**_    
-
 ----
 ### Examples and Tutorials
 After you selected a RAK board you can see examples for all WisBlock modules
@@ -117,28 +111,26 @@ For more information about the examples and tutorials visit our [Github WisBlock
 ```
 $ pip3 install adafruit-nrfutil --user
 ```
-<!---
+
 ### Drivers
 
 - [SiLabs CP2104 driver](https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers) might be required for some modules.
 
-
--->
-## Bootloader Update
+<!---
+# TODO Add bootloader support later
+## Bootloader Support
 
 ### Upgrade existing Bootloader
 
 Bluefruit's Bootloader is self-upgradable, you could upgrade to the latest Bootloader + Softdevice using the serial port within Arduino IDE.
 
-- Select `Tools > Board > WisBlock Core RAK4631 Board`
+- Select `Tools > Board > Adafruit Bluefruit Feather52`
 - Select `Tools > Programmer > Bootloader DFU for Bluefruit nRF52`
 - Select `Tools > Burn Bootloader`
 - **WAIT** until the process complete ~30 seconds
 
-**Note: close the Serial Monitor before you click "Burn Bootloader".**
-# _Afterwards, you shouldn't close the Arduino IDE, unplug the Feather, launch Serial Monitor etc ... to abort the process. There is a high chance it will brick your device! Do this with care and caution._
+**Note: close the Serial Monitor before you click "Burn Bootloader". Afterwards, you shouldn't close the Arduino IDE, unplug the Feather, launch Serial Monitor etc ... to abort the process. There is a high chance it will brick your device! Do this with care and caution.**
 
-<!--
 ### Burning new Bootloader
 
 To burn the bootloader from within the Arduino IDE, you will need the following tools installed
@@ -180,7 +172,7 @@ $ nrfjprog --reset -f nrf52
 
 This BSP is based on [Adafruits nRF52 BSP](https://github.com/adafruit/Adafruit_nRF52_Arduino),    
 which is based on [Arduino-nRF5](https://github.com/sandeepmistry/arduino-nRF5) by Sandeep Mistry,    
-which in turn is based on the [Arduino SAMD Core](https://github.com/arduino/ArduinoCore-samd).    
+which in turn is based on the [Arduino SAMD Core](https://github.com/arduino/ArduinoCore-samd).
 
 The following libraries are used:
 

@@ -44,6 +44,6 @@ void initVariant()
   ledOff(PIN_LED1);
 
   pinMode(PIN_LED2, OUTPUT);
-	ledOff(PIN_LED2);
+  ledOff(PIN_LED2);;
 }
 

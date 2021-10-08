@@ -21,8 +21,6 @@
    SPI_CS    <->  P0.26 (Arduino GPIO number 26) 
  */
 
-#include "SPI.h"
-
 #define BG77_POWER_KEY 17
 char cArr[128] = {0};
 String bg_rsp = "";

@@ -44,7 +44,7 @@ bool doOTAA = true;   // OTAA is used by default.
 #define JOINREQ_NBTRIALS 3                                        // < Number of trials for the join request.
 DeviceClass_t g_CurrentClass = CLASS_A;                          // class definition
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_EU868;    /* Region:EU868*/
-lmh_confirm g_CurrentConfirm = LMH_UNCONFIRMED_MSG;                // confirm/unconfirm packet definition
+lmh_confirm g_CurrentConfirm = LMH_CONFIRMED_MSG;                // confirm/unconfirm packet definition
 uint8_t g_AppPort = LORAWAN_APP_PORT;                            // data port
 
 // Structure containing LoRaWan parameters, needed for lmh_init()
@@ -116,6 +116,9 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
 
+    // Initialize LoRa chip.
+    lora_rak4630_init();
+
     // Initialize Serial for debug output
     Serial.begin(115200);
     // Wait for USB Serial to be ready or terminal to be connected
@@ -133,10 +136,6 @@ void setup()
             break;
         }
     }
-
-    // Initialize LoRa chip.
-    lora_rak4630_init();
-
     Serial.println("=====================================");
     Serial.println("Welcome to RAK4630 LoRaWan!!!");
     if (doOTAA)

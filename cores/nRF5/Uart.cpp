@@ -104,8 +104,12 @@ void Uart::begin(unsigned long baudrate, uint16_t config)
     nrfBaudRate = UARTE_BAUDRATE_BAUDRATE_Baud19200;
   } else if (baudrate <= 28800) {
     nrfBaudRate = UARTE_BAUDRATE_BAUDRATE_Baud28800;
+  } else if (baudrate <= 31250) {
+    nrfBaudRate = UARTE_BAUDRATE_BAUDRATE_Baud31250;
   } else if (baudrate <= 38400) {
     nrfBaudRate = UARTE_BAUDRATE_BAUDRATE_Baud38400;
+  } else if (baudrate <= 56000) {
+    nrfBaudRate = UARTE_BAUDRATE_BAUDRATE_Baud56000;
   } else if (baudrate <= 57600) {
     nrfBaudRate = UARTE_BAUDRATE_BAUDRATE_Baud57600;
   } else if (baudrate <= 76800) {
@@ -152,8 +156,16 @@ void Uart::end()
 
   nrfUart->INTENCLR = UARTE_INTENSET_ENDRX_Msk | UARTE_INTENSET_ENDTX_Msk;
 
+  nrfUart->EVENTS_RXTO = 0;
+  nrfUart->EVENTS_TXSTOPPED = 0;
+
   nrfUart->TASKS_STOPRX = 0x1UL;
   nrfUart->TASKS_STOPTX = 0x1UL;
+
+  // Wait for TXSTOPPED event and for RXTO event
+  // This is required before disabling UART to fully power down transceiver PHY.
+  // Otherwise transceiver will continue to consume ~900uA
+  while ( !(nrfUart->EVENTS_TXSTOPPED && nrfUart->EVENTS_RXTO) ) yield();
 
   nrfUart->ENABLE = UARTE_ENABLE_ENABLE_Disabled;
 

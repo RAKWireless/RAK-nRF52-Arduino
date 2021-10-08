@@ -32,14 +32,15 @@
 #if defined(ARDUINO_ARCH_SAMD)
   #include "arduino/ports/samd/tusb_config_samd.h"
 
-#elif defined(ARDUINO_ARCH_NRF52)
+#elif defined(ARDUINO_NRF52_ADAFRUIT)
   #include "arduino/ports/nrf/tusb_config_nrf.h"
 
 #elif defined(ARDUINO_ARCH_RP2040)
   #include "arduino/ports/rp2040/tusb_config_rp2040.h"
 
 #elif defined(ARDUINO_ARCH_ESP32)
-  #include "arduino/ports/esp32/tusb_config_esp32.h"
+  // Use the BSP sdk/include/arduino_tinyusb/include/tusb_config.h
+  #include <tusb_config.h>
 
 #else
   #error TinyUSB Arduino Library does not support your core yet

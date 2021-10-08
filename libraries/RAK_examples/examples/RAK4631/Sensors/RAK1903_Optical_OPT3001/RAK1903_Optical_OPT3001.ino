@@ -10,8 +10,6 @@
 #include <Wire.h>
 #include <ClosedCube_OPT3001.h> // Click here to get the library: http://librarymanager/All#OPT3001
 
-// Forward declarations for functions
-void printError(String text, OPT3001_ErrorCode error);
 
 ClosedCube_OPT3001 g_opt3001;
 #define OPT3001_ADDRESS 0x44

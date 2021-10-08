@@ -33,6 +33,9 @@ uint32_t bootloaderVersion = 0;
 
 void init( void )
 {
+  // clear reset reason: can save it for application usage if needed.
+  NRF_POWER->RESETREAS |= NRF_POWER->RESETREAS;
+
   // Retrieve bootloader version
   bootloaderVersion = BOOTLOADER_VERSION_REGISTER;
 
@@ -142,4 +145,28 @@ void systemOff(uint32_t pin, uint8_t wake_logic)
   {
     NRF_POWER->SYSTEMOFF = 1;
   }
+}
+
+
+float readCPUTemperature( void )
+{
+  uint8_t en;
+  int32_t temp;
+  (void) sd_softdevice_is_enabled(&en);
+  if (en) 
+  {
+    sd_temp_get(&temp);
+  }
+  else
+  {
+    NRF_TEMP->EVENTS_DATARDY = 0x00; // Only needed in case another function is also looking at this event flag
+    NRF_TEMP->TASKS_START = 0x01; 
+  
+    while (!NRF_TEMP->EVENTS_DATARDY);
+    temp = NRF_TEMP->TEMP;                      // Per anomaly 29 (unclear whether still applicable), TASKS_STOP will clear the TEMP register.
+
+    NRF_TEMP->TASKS_STOP = 0x01;           // Per anomaly 30 (unclear whether still applicable), the temp peripheral needs to be shut down
+    NRF_TEMP->EVENTS_DATARDY = 0x00;
+  }
+  return temp / 4.0F;
 }

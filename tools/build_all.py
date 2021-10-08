@@ -44,7 +44,7 @@ def build_examples(variant):
 
     for sketch in all_examples:
         # skip TinyUSB library examples for nRF52832
-        if variant == 'WisCoreRAK4600Board' and "libraries/Adafruit_TinyUSB_Arduino" in sketch:
+        if variant == 'feather52832' and "libraries/Adafruit_TinyUSB_Arduino" in sketch:
             continue
 
         start_time = time.monotonic()
@@ -59,7 +59,7 @@ def build_examples(variant):
             success = SKIPPED
             skip_count += 1
         else:
-                build_result = subprocess.run("arduino-cli compile --warnings all --fqbn {} {}".format(fqbn, sketch), shell=True, stdout=PIPE, stderr=PIPE)
+            build_result = subprocess.run("arduino-cli compile --warnings all --fqbn {} {}".format(fqbn, sketch), shell=True, stdout=PIPE, stderr=PIPE)
 
             # get stderr into a form where warning/error was output to stderr
             if build_result.returncode != 0:
@@ -69,9 +69,9 @@ def build_examples(variant):
             else:
                 success_count += 1
                 if build_result.stderr:
-                success = WARNING
-            else:
-                success = SUCCEEDED
+                    success = WARNING
+                else:
+                    success = SUCCEEDED
 
         build_duration = time.monotonic() - start_time
 
@@ -84,7 +84,7 @@ def build_examples(variant):
             
             # Build with warnings
             if build_result.stderr:
-                    print(build_result.stderr.decode("utf-8"))
+                print(build_result.stderr.decode("utf-8"))
 
 build_time = time.monotonic()
 

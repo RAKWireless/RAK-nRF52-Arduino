@@ -15,16 +15,24 @@
  *
  * There are 2 ways to test the sketch
  * 1. Using nodejs
- *    - Install nodejs and nmp to your PC
- *    - Install execellent node-hid (https://github.com/node-hid/node-hid) by
- *      $ npm install node-hid
- *    - Run provided hid test script 
- *      $ node hid_test.js
- *    
- * 2. Using python hidRun 
- *    - Python and `hid` package is required, for installation please follow https://pypi.org/project/hid/
- *    - Run provided hid test script to send and receive data to this device.
- *      $ python3 hid_test.py
+ * - Install nodejs and npm to your PC
+ *
+ * - Install excellent node-hid (https://github.com/node-hid/node-hid) by
+ *   $ npm install node-hid
+ *
+ * - Run provided hid test script
+ *   $ node hid_test.js
+ *
+ * 2. Using python
+ * - Install `hid` package (https://pypi.org/project/hid/) by
+ *   $ pip install hid
+ *
+ * - hid package replies on hidapi (https://github.com/libusb/hidapi) for backend,
+ *   which already available in Linux. However on windows, you may need to download its dlls from their release page and
+ *   copy it over to folder where python is installed.
+ *
+ * - Run provided hid test script to send and receive data to this device.
+ *   $ python3 hid_test.py
  */
 
 #include "Adafruit_TinyUSB.h"
@@ -41,6 +49,11 @@ Adafruit_USBD_HID usb_hid;
 // the setup function runs once when you press reset or power the board
 void setup()
 {
+#if defined(ARDUINO_ARCH_MBED) && defined(ARDUINO_ARCH_RP2040)
+  // Manual begin() is required on core without built-in support for TinyUSB such as mbed rp2040
+  TinyUSB_Device_Init(0);
+#endif
+
   usb_hid.enableOutEndpoint(true);
   usb_hid.setPollInterval(2);
   usb_hid.setReportDescriptor(desc_hid_report, sizeof(desc_hid_report));
@@ -52,7 +65,7 @@ void setup()
   Serial.begin(115200);
 
   // wait until device mounted
-  while( !USBDevice.mounted() ) delay(1);
+  while( !TinyUSBDevice.mounted() ) delay(1);
 
   Serial.println("Adafruit TinyUSB HID Generic In Out example");
 }

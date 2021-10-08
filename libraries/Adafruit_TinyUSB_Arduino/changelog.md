@@ -1,5 +1,46 @@
 # Adafruit TinyUSB Arduino Library Changelog
 
+## 1.4.4 - 2021.08.18
+
+- Update tinyusb stack
+- Fully support nRF5x suspend, resume & remote wakeup
+- Update hid_keyboard/mouse example to hid boot keyboard/mouse
+
+## 1.4.3 - 2021.08.11
+
+- Fix HID generic inout example python/js script cause missing 1st byte in report
+- Use correct HID code for newline 0x28
+
+## 1.4.2 - 2021.08.03
+
+- Update tinyusb to match upstream
+
+## 1.4.1 - 2021.07.27
+
+- Fix nRF race condition when initialize usb stack
+
+## 1.4.0 - 2021.07.22
+
+- Support rp2040 mbed core as non built-in support
+
+## 1.3.2 - 2021.07.07
+
+- revert CFG_TUSB_DEBUG = 0 on SAMD port
+
+## 1.3.1 - 2021.07.06
+
+- Fix warning with ci build for rp2040 core
+- Fix example build for esp32s2
+- Use ARDUINO_NRF52_ADAFRUIT instead of ARDUINO_ARCH_NRF52
+
+## 1.3.0 - 2021.06.29
+
+- Move tusb_config for each ports into library to make it more portable
+- Adding support for ESP32S2 (still need PR to be merged from esp32-arduino)
+- Update CDC to have instance and getInstanceCount()
+- Allow USB_VID/PID to be declared in variant pins_arduino.h
+- Use bug report form template
+
 ## 1.1.0 - 2021.06.21
 
 - Add support for multiple CDC ports (need to modify tusb_config.h)

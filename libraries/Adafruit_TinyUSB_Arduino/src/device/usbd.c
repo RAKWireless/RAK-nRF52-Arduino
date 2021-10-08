@@ -33,12 +33,15 @@
 #include "device/usbd_pvt.h"
 #include "device/dcd.h"
 
-#ifndef CFG_TUD_TASK_QUEUE_SZ
-#define CFG_TUD_TASK_QUEUE_SZ   16
-#endif
+//--------------------------------------------------------------------+
+// USBD Configuration
+//--------------------------------------------------------------------+
 
-#ifndef CFG_TUD_EP_MAX
-#define CFG_TUD_EP_MAX          9
+// Debug level of USBD
+#define USBD_DBG_LVL   2
+
+#ifndef CFG_TUD_TASK_QUEUE_SZ
+  #define CFG_TUD_TASK_QUEUE_SZ   16
 #endif
 
 //--------------------------------------------------------------------+
@@ -65,7 +68,7 @@ typedef struct
   uint8_t speed;
 
   uint8_t itf2drv[16];     // map interface number to driver (0xff is invalid)
-  uint8_t ep2drv[CFG_TUD_EP_MAX][2]; // map endpoint to driver ( 0xff is invalid )
+  uint8_t ep2drv[CFG_TUD_ENDPPOINT_MAX][2]; // map endpoint to driver ( 0xff is invalid )
 
   struct TU_ATTR_PACKED
   {
@@ -74,7 +77,7 @@ typedef struct
     volatile bool claimed : 1;
 
     // TODO merge ep2drv here, 4-bit should be sufficient
-  }ep_status[CFG_TUD_EP_MAX][2];
+  }ep_status[CFG_TUD_ENDPPOINT_MAX][2];
 
 }usbd_device_t;
 
@@ -188,9 +191,9 @@ static usbd_class_driver_t const _usbd_driver[] =
   },
   #endif
 
-  #if CFG_TUD_DFU_MODE
+  #if CFG_TUD_DFU
   {
-    DRIVER_NAME("DFU-MODE")
+    DRIVER_NAME("DFU")
     .init             = dfu_moded_init,
     .reset            = dfu_moded_reset,
     .open             = dfu_moded_open,
@@ -556,7 +559,7 @@ void tud_task (void)
       break;
 
       case DCD_EVENT_SUSPEND:
-        TU_LOG2("\r\n");
+        TU_LOG2(": Remote Wakeup = %u\r\n", _usbd_dev.remote_wakeup_en);
         if (tud_suspend_cb) tud_suspend_cb(_usbd_dev.remote_wakeup_en);
       break;
 
@@ -684,6 +687,8 @@ static bool process_control_request(uint8_t rhport, tusb_control_request_t const
           // Only support remote wakeup for device feature
           TU_VERIFY(TUSB_REQ_FEATURE_REMOTE_WAKEUP == p_request->wValue);
 
+          TU_LOG(USBD_DBG_LVL, "    Enable Remote Wakeup\r\n");
+
           // Host may enable remote wake up before suspending especially HID device
           _usbd_dev.remote_wakeup_en = true;
           tud_control_status(rhport, p_request);
@@ -692,6 +697,8 @@ static bool process_control_request(uint8_t rhport, tusb_control_request_t const
         case TUSB_REQ_CLEAR_FEATURE:
           // Only support remote wakeup for device feature
           TU_VERIFY(TUSB_REQ_FEATURE_REMOTE_WAKEUP == p_request->wValue);
+
+          TU_LOG(USBD_DBG_LVL, "    Disable Remote Wakeup\r\n");
 
           // Host may disable remote wake up after resuming
           _usbd_dev.remote_wakeup_en = false;
@@ -831,7 +838,7 @@ static bool process_set_config(uint8_t rhport, uint8_t cfg_num)
 
   // Parse interface descriptor
   uint8_t const * p_desc   = ((uint8_t const*) desc_cfg) + sizeof(tusb_desc_configuration_t);
-  uint8_t const * desc_end = ((uint8_t const*) desc_cfg) + desc_cfg->wTotalLength;
+  uint8_t const * desc_end = ((uint8_t const*) desc_cfg) + tu_le16toh(desc_cfg->wTotalLength);
 
   while( p_desc < desc_end )
   {
@@ -953,9 +960,8 @@ static bool process_get_descriptor(uint8_t rhport, tusb_control_request_t const 
 
       tusb_desc_bos_t const* desc_bos = (tusb_desc_bos_t const*) tud_descriptor_bos_cb();
 
-      uint16_t total_len;
       // Use offsetof to avoid pointer to the odd/misaligned address
-      memcpy(&total_len, (uint8_t*) desc_bos + offsetof(tusb_desc_bos_t, wTotalLength), 2);
+      uint16_t const total_len = tu_le16toh( tu_unaligned_read16((uint8_t*) desc_bos + offsetof(tusb_desc_bos_t, wTotalLength)) );
 
       return tud_control_xfer(rhport, p_request, (void*) desc_bos, total_len);
     }
@@ -968,9 +974,8 @@ static bool process_get_descriptor(uint8_t rhport, tusb_control_request_t const 
       tusb_desc_configuration_t const* desc_config = (tusb_desc_configuration_t const*) tud_descriptor_configuration_cb(desc_index);
       TU_ASSERT(desc_config);
 
-      uint16_t total_len;
       // Use offsetof to avoid pointer to the odd/misaligned address
-      memcpy(&total_len, (uint8_t*) desc_config + offsetof(tusb_desc_configuration_t, wTotalLength), 2);
+      uint16_t const total_len = tu_le16toh( tu_unaligned_read16((uint8_t*) desc_config + offsetof(tusb_desc_configuration_t, wTotalLength)) );
 
       return tud_control_xfer(rhport, p_request, (void*) desc_config, total_len);
     }
@@ -1038,10 +1043,6 @@ void dcd_event_handler(dcd_event_t const * event, bool in_isr)
       }
     break;
 
-    case DCD_EVENT_SOF:
-      return;   // skip SOF event for now
-    break;
-
     case DCD_EVENT_SUSPEND:
       // NOTE: When plugging/unplugging device, the D+/D- state are unstable and
       // can accidentally meet the SUSPEND condition ( Bus Idle for 3ms ).
@@ -1060,6 +1061,17 @@ void dcd_event_handler(dcd_event_t const * event, bool in_isr)
       {
         _usbd_dev.suspended = 0;
         osal_queue_send(_usbd_q, event, in_isr);
+      }
+    break;
+
+    case DCD_EVENT_SOF:
+      // Some MCUs after running dcd_remote_wakeup() does not have way to detect the end of remote wakeup
+      // which last 1-15 ms. DCD can use SOF as a clear indicator that bus is back to operational
+      if ( _usbd_dev.suspended )
+      {
+        _usbd_dev.suspended = 0;
+        dcd_event_t const event_resume = { .rhport = event->rhport, .event_id = DCD_EVENT_RESUME };
+        osal_queue_send(_usbd_q, &event_resume, in_isr);
       }
     break;
 
@@ -1150,14 +1162,17 @@ void usbd_defer_func(osal_task_func_t func, void* param, bool in_isr)
 
 bool usbd_edpt_open(uint8_t rhport, tusb_desc_endpoint_t const * desc_ep)
 {
-  TU_LOG2("  Open EP %02X with Size = %u\r\n", desc_ep->bEndpointAddress, desc_ep->wMaxPacketSize.size);
+  uint16_t const max_packet_size = tu_le16toh(desc_ep->wMaxPacketSize.size);
+
+  TU_LOG2("  Open EP %02X with Size = %u\r\n", desc_ep->bEndpointAddress, max_packet_size);
+  TU_ASSERT(tu_edpt_number(desc_ep->bEndpointAddress) < CFG_TUD_ENDPPOINT_MAX);
 
   switch (desc_ep->bmAttributes.xfer)
   {
     case TUSB_XFER_ISOCHRONOUS:
     {
-      uint16_t const max_epsize = (_usbd_dev.speed == TUSB_SPEED_HIGH ? 1024 : 1023);
-      TU_ASSERT(desc_ep->wMaxPacketSize.size <= max_epsize);
+      uint16_t const spec_size = (_usbd_dev.speed == TUSB_SPEED_HIGH ? 1024 : 1023);
+      TU_ASSERT(max_packet_size <= spec_size);
     }
     break;
 
@@ -1165,18 +1180,18 @@ bool usbd_edpt_open(uint8_t rhport, tusb_desc_endpoint_t const * desc_ep)
       if (_usbd_dev.speed == TUSB_SPEED_HIGH)
       {
         // Bulk highspeed must be EXACTLY 512
-        TU_ASSERT(desc_ep->wMaxPacketSize.size == 512);
+        TU_ASSERT(max_packet_size == 512);
       }else
       {
         // TODO Bulk fullspeed can only be 8, 16, 32, 64
-        TU_ASSERT(desc_ep->wMaxPacketSize.size <= 64);
+        TU_ASSERT(max_packet_size <= 64);
       }
     break;
 
     case TUSB_XFER_INTERRUPT:
     {
-      uint16_t const max_epsize = (_usbd_dev.speed == TUSB_SPEED_HIGH ? 1024 : 64);
-      TU_ASSERT(desc_ep->wMaxPacketSize.size <= max_epsize);
+      uint16_t const spec_size = (_usbd_dev.speed == TUSB_SPEED_HIGH ? 1024 : 64);
+      TU_ASSERT(max_packet_size <= spec_size);
     }
     break;
 
@@ -1243,7 +1258,7 @@ bool usbd_edpt_xfer(uint8_t rhport, uint8_t ep_addr, uint8_t * buffer, uint16_t 
   uint8_t const epnum = tu_edpt_number(ep_addr);
   uint8_t const dir   = tu_edpt_dir(ep_addr);
 
-  TU_LOG2("  Queue EP %02X with %u bytes ... ", ep_addr, total_bytes);
+  TU_LOG2("  Queue EP %02X with %u bytes ...\r\n", ep_addr, total_bytes);
 
   // Attempt to transfer on a busy endpoint, sound like an race condition !
   TU_ASSERT(_usbd_dev.ep_status[epnum][dir].busy == 0);
@@ -1254,14 +1269,13 @@ bool usbd_edpt_xfer(uint8_t rhport, uint8_t ep_addr, uint8_t * buffer, uint16_t 
 
   if ( dcd_edpt_xfer(rhport, ep_addr, buffer, total_bytes) )
   {
-    TU_LOG2("OK\r\n");
     return true;
   }else
   {
     // DCD error, mark endpoint as ready to allow next transfer
     _usbd_dev.ep_status[epnum][dir].busy = false;
     _usbd_dev.ep_status[epnum][dir].claimed = 0;
-    TU_LOG2("failed\r\n");
+    TU_LOG2("FAILED\r\n");
     TU_BREAKPOINT();
     return false;
   }
@@ -1312,6 +1326,8 @@ bool usbd_edpt_busy(uint8_t rhport, uint8_t ep_addr)
 
 void usbd_edpt_stall(uint8_t rhport, uint8_t ep_addr)
 {
+  TU_LOG(USBD_DBG_LVL, "    Stall EP %02X", ep_addr);
+
   uint8_t const epnum = tu_edpt_number(ep_addr);
   uint8_t const dir   = tu_edpt_dir(ep_addr);
 
@@ -1322,8 +1338,11 @@ void usbd_edpt_stall(uint8_t rhport, uint8_t ep_addr)
 
 void usbd_edpt_clear_stall(uint8_t rhport, uint8_t ep_addr)
 {
+  TU_LOG(USBD_DBG_LVL, "    Clear Stall EP %02X", ep_addr);
+
   uint8_t const epnum = tu_edpt_number(ep_addr);
   uint8_t const dir   = tu_edpt_dir(ep_addr);
+
 
   dcd_edpt_clear_stall(rhport, ep_addr);
   _usbd_dev.ep_status[epnum][dir].stalled = false;

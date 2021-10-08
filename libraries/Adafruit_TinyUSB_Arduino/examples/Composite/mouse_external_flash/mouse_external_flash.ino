@@ -26,6 +26,11 @@
 #if defined(FRAM_CS) && defined(FRAM_SPI)
   Adafruit_FlashTransport_SPI flashTransport(FRAM_CS, FRAM_SPI);
 
+#elif defined(ARDUINO_ARCH_ESP32)
+  // ESP32 use same flash device that store code.
+  // Therefore there is no need to specify the SPI and SS
+  Adafruit_FlashTransport_ESP32 flashTransport;
+
 #else
   // On-board external flash (QSPI or SPI) macros should already
   // defined in your board variant if supported
@@ -109,7 +114,7 @@ void loop()
   uint32_t const btn = (digitalRead(pin) == activeState);
 
   // Remote wakeup
-  if ( USBDevice.suspended() && btn )
+  if ( TinyUSBDevice.suspended() && btn )
   {
     // Wake up host if we are in suspend mode
     // and REMOTE_WAKEUP feature is enabled by host

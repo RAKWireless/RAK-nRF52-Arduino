@@ -19,12 +19,14 @@
  * Depending on the board, the button pin
  * and its active state (when pressed) are different
  */
-#if defined ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS
+#if defined ARDUINO_SAMD_CIRCUITPLAYGROUND_EXPRESS || defined ARDUINO_NRF52840_CIRCUITPLAY
   const int pin = 4; // Left Button
   bool activeState = true;
-#elif defined ARDUINO_NRF52840_FEATHER
-  const int pin = 7; // UserSw
+
+#elif defined PIN_BUTTON1
+  const int pin = PIN_BUTTON1;
   bool activeState = false;
+
 #else
   const int pin = 12;
   bool activeState = false;
@@ -66,7 +68,7 @@ void setup()
   Serial.println("Adafruit TinyUSB HID Composite example");
 
   // wait until device mounted
-  while( !USBDevice.mounted() ) delay(1);
+  while( !TinyUSBDevice.mounted() ) delay(1);
 }
 
 void loop()
@@ -78,11 +80,11 @@ void loop()
   bool btn_pressed = (digitalRead(pin) == activeState);
 
   // Remote wakeup
-  if ( USBDevice.suspended() && btn_pressed )
+  if ( TinyUSBDevice.suspended() && btn_pressed )
   {
     // Wake up host if we are in suspend mode
     // and REMOTE_WAKEUP feature is enabled by host
-    USBDevice.remoteWakeup();
+    TinyUSBDevice.remoteWakeup();
   }
 
   /*------------- Mouse -------------*/
