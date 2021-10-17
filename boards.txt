@@ -4,7 +4,7 @@ menu.debug=Debug
 # ----------------------------------
 # WisBlock Core RAK4631 Board
 # ----------------------------------
-WisCoreRAK4631Board.name=WisBlock Core RAK4631 Board
+WisCoreRAK4631Board.name=WisBlock RAK4631
 
 # VID/PID for Bootloader, Arduino & CircuitPython
 WisCoreRAK4631Board.vid.0=0x239A
@@ -33,7 +33,7 @@ WisCoreRAK4631Board.build.board=WisCore_RAK4631_Board
 WisCoreRAK4631Board.build.core=nRF5
 WisCoreRAK4631Board.build.variant=WisCore_RAK4631_Board
 WisCoreRAK4631Board.build.usb_manufacturer="RAKwireless"
-WisCoreRAK4631Board.build.usb_product="WisCore RAK4631 Board"
+WisCoreRAK4631Board.build.usb_product="WisBlock RAK4631"
 WisCoreRAK4631Board.build.extra_flags=-DNRF52840_XXAA {build.flags.usb}
 WisCoreRAK4631Board.build.ldscript=nrf52840_s140_v6.ld
 WisCoreRAK4631Board.build.vid=0x239A
@@ -59,7 +59,7 @@ WisCoreRAK4631Board.menu.debug.l3.build.sysview_flags=-DCFG_SYSVIEW=1
 # -----------------------------------
 # Adafruit Feather nRF52832
 # -----------------------------------
-WisCoreRAK4600Board.name=Adafruit Feather nRF52832
+WisCoreRAK4600Board.name=WisBlock RAK4601
 
 # VID/PID for Bootloader, Arduino & CircuitPython
 
@@ -76,11 +76,11 @@ WisCoreRAK4600Board.upload.maximum_data_size=52224
 # Build
 WisCoreRAK4600Board.build.mcu=cortex-m4
 WisCoreRAK4600Board.build.f_cpu=64000000
-WisCoreRAK4600Board.build.board=NRF52832_FEATHER
+WisCoreRAK4600Board.build.board=WisCore_RAK4601_Board
 WisCoreRAK4600Board.build.core=nRF5
 WisCoreRAK4600Board.build.variant=WisCore_RAK4600_Board
 WisCoreRAK4600Board.build.usb_manufacturer="RAKwireless"
-WisCoreRAK4600Board.build.usb_product="WisCore RAK4600 Board"
+WisCoreRAK4600Board.build.usb_product="WisBlock RAK4601"
 WisCoreRAK4600Board.build.extra_flags=-DNRF52832_XXAA -DNRF52
 WisCoreRAK4600Board.build.ldscript=nrf52832_s132_v6.ld
 
