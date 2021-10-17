@@ -6,7 +6,8 @@
  * @date 2020-07-28
  * @copyright Copyright (c) 2020 
  */
- 
+#include <Adafruit_TinyUSB.h>
+
 #include <ArduinoRS485.h> //Click here to get the library: http://librarymanager/All#ArduinoRS485
 
 void setup()

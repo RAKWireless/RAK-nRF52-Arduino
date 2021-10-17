@@ -8,6 +8,7 @@
  */
  
 #include <Arduino.h>
+#include <Adafruit_TinyUSB.h>
 
 #define NO_OF_SAMPLES 32
 
