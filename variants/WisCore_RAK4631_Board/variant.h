@@ -80,10 +80,7 @@ extern "C"
 /*
  * Buttons
  */
-#define PIN_BUTTON1 11
-#define PIN_BUTTON2 12
-#define PIN_BUTTON3 24
-#define PIN_BUTTON4 25
+// RAK4631 has no buttons
 
 /*
  * Analog pins
@@ -142,22 +139,27 @@ extern "C"
 /*
  * Wire Interfaces
  */
-#define WIRE_INTERFACES_COUNT 1
+#define WIRE_INTERFACES_COUNT 2
 
 #define PIN_WIRE_SDA (13)
 #define PIN_WIRE_SCL (14)
 
-// QSPI Pins
-#define PIN_QSPI_SCK 3	// 19
-#define PIN_QSPI_CS 26	// 17
-#define PIN_QSPI_IO0 30 // 20
-#define PIN_QSPI_IO1 29 // 21
-#define PIN_QSPI_IO2 28 // 22
-#define PIN_QSPI_IO3 2	// 23
+#define PIN_WIRE1_SDA (24)
+#define PIN_WIRE1_SCL (25)
 
-// On-board QSPI Flash
-#define EXTERNAL_FLASH_DEVICES IS25LP080D
-#define EXTERNAL_FLASH_USE_QSPI
+	// QSPI Pins
+	// QSPI occupied by GPIO's
+	// #define PIN_QSPI_SCK 3	// 19
+	// #define PIN_QSPI_CS 26	// 17
+	// #define PIN_QSPI_IO0 30 // 20
+	// #define PIN_QSPI_IO1 29 // 21
+	// #define PIN_QSPI_IO2 28 // 22
+	// #define PIN_QSPI_IO3 2	// 23
+
+	// On-board QSPI Flash
+	// No onboard flash
+	// #define EXTERNAL_FLASH_DEVICES IS25LP080D
+	// #define EXTERNAL_FLASH_USE_QSPI
 
 #ifdef __cplusplus
 }

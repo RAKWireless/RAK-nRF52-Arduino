@@ -57,7 +57,7 @@ WisCoreRAK4631Board.menu.debug.l3.build.debug_flags=-DCFG_DEBUG=3
 WisCoreRAK4631Board.menu.debug.l3.build.sysview_flags=-DCFG_SYSVIEW=1
 
 # -----------------------------------
-# Adafruit Feather nRF52832
+# WisBlock Core RAK4601 Board
 # -----------------------------------
 WisCoreRAK4600Board.name=WisBlock RAK4601
 
