@@ -31,7 +31,7 @@ bool doOTAA = true;   // OTAA is used by default.
 #define JOINREQ_NBTRIALS 3 /**< Number of trials for the join request. */
 DeviceClass_t g_CurrentClass = CLASS_A;
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_EU868;    /* Region:EU868*/
-lmh_confirm g_CurrentConfirm = LMH_CONFIRMED_MSG;
+lmh_confirm g_CurrentConfirm = LMH_UNCONFIRMED_MSG;
 uint8_t g_AppPort = LORAWAN_APP_PORT;
 
 /**@brief Structure containing LoRaWan parameters, needed for lmh_init()
@@ -91,9 +91,6 @@ void setup()
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
 
-  // Initialize LoRa chip.
-  lora_rak4630_init();
-
   // Initialize Serial for debug output
   time_t timeout = millis();
   Serial.begin(115200);
@@ -108,7 +105,8 @@ void setup()
       break;
     }
   }
-
+  // Initialize LoRa chip.
+  lora_rak4630_init();
   Serial.println("=====================================");
   Serial.println("Welcome to RAK4630 LoRaWan!!!");
   if (doOTAA)
@@ -131,6 +129,9 @@ void setup()
     case LORAMAC_REGION_CN470:
       Serial.println("Region: CN470");
       break;
+  case LORAMAC_REGION_CN779:
+    Serial.println("Region: CN779");
+    break;
     case LORAMAC_REGION_EU433:
       Serial.println("Region: EU433");
       break;
@@ -146,6 +147,18 @@ void setup()
     case LORAMAC_REGION_US915:
       Serial.println("Region: US915");
       break;
+  case LORAMAC_REGION_RU864:
+    Serial.println("Region: RU864");
+    break;
+  case LORAMAC_REGION_AS923_2:
+    Serial.println("Region: AS923-2");
+    break;
+  case LORAMAC_REGION_AS923_3:
+    Serial.println("Region: AS923-3");
+    break;
+  case LORAMAC_REGION_AS923_4:
+    Serial.println("Region: AS923-4");
+    break;
   }
   Serial.println("=====================================");
 
@@ -219,7 +232,14 @@ void loop()
  */
 void lorawan_has_joined_handler(void)
 {
+  if(doOTAA == true)
+  {
   Serial.println("OTAA Mode, Network Joined!");
+  }
+  else
+  {
+    Serial.println("ABP Mode");
+  }
 
   lmh_error_status ret = lmh_class_request(g_CurrentClass);
   if (ret == LMH_SUCCESS)

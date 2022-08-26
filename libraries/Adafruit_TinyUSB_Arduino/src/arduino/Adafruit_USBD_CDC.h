@@ -27,7 +27,7 @@
 
 #include "Adafruit_TinyUSB_API.h"
 
-#ifdef __cplusplus
+#if defined(__cplusplus) && !defined(ARDUINO_ARCH_ESP32)
 
 #include "Adafruit_USBD_Interface.h"
 #include "Stream.h"
@@ -60,7 +60,10 @@ public:
   // Stream API
   virtual int available(void);
   virtual int peek(void);
+
   virtual int read(void);
+  size_t read(uint8_t *buffer, size_t size);
+
   virtual void flush(void);
   virtual size_t write(uint8_t);
 
@@ -83,8 +86,7 @@ private:
 };
 
 // "Serial" is used with TinyUSB CDC
-#if defined(USE_TINYUSB) &&                                                    \
-    !(defined(ARDUINO_ARCH_ESP32) && ARDUINO_SERIAL_PORT == 0)
+#if defined(USE_TINYUSB)
 extern Adafruit_USBD_CDC Serial;
 #define SerialTinyUSB Serial
 #endif

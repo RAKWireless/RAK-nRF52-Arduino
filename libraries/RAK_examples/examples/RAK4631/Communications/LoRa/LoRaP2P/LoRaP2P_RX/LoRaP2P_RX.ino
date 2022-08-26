@@ -52,9 +52,6 @@ static uint8_t RcvBuffer[64];
 void setup()
 {
 
-	// Initialize LoRa chip.
-	lora_rak4630_init();
-
 	// Initialize Serial for debug output
 	time_t timeout = millis();
 	Serial.begin(115200);
@@ -72,7 +69,8 @@ void setup()
 	Serial.println("=====================================");
 	Serial.println("LoRaP2P Rx Test");
 	Serial.println("=====================================");
-
+	// Initialize LoRa chip.
+	lora_rak4630_init();
 	// Initialize the Radio callbacks
 	RadioEvents.TxDone = NULL;
 	RadioEvents.RxDone = OnRxDone;
