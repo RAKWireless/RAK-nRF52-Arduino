@@ -30,18 +30,18 @@ void I2SClass::irqHander(nrfx_i2s_buffers_t const * p_released)
         _onRxIRQ();  
          _readBuffer.swap();
          NRF_I2S->RXD.PTR = (uint32_t)_readBuffer.data();  
-        
-      }           
+       }         
+                
     }
      
     if(p_released->p_tx_buffer!=NULL)
     {            
       if (_onTxIRQ)
        { 
-        _onTxIRQ();   
+        _onTxIRQ();  
         _writeBuffer.swap();  
-        NRF_I2S->TXD.PTR = (uint32_t)_writeBuffer.data();     
-       }  
+        NRF_I2S->TXD.PTR = (uint32_t)_writeBuffer.data();    
+       }          
        
     }   
 }
@@ -186,15 +186,7 @@ uint32_t I2SClass::begin(i2s_mode_t mode,i2s_channels_t channel,uint8_t sampleWi
    setChannels(channel);
    setFs(fs);
    _readBuffer.reset();
-   _writeBuffer.reset();
-   if(_readBuffer.size()>_writeBuffer.size())
-   {
-    _bufferlength = _readBuffer.size();
-   }
-   else
-   {
-    _bufferlength = _writeBuffer.size();
-   }  
+   _writeBuffer.reset(); 
    return(nrfx_i2s_init(&_i2s_config, data_handler));
 }
 uint32_t I2SClass::begin(i2s_mode_t mode)
@@ -207,15 +199,6 @@ uint32_t I2SClass::begin(i2s_mode_t mode)
    _readBuffer.reset();
    _writeBuffer.reset();
 
-   if(_readBuffer.size()>_writeBuffer.size())
-   {
-    _bufferlength = _readBuffer.size();
-   }
-   else
-   {
-    _bufferlength = _writeBuffer.size();
-   }   
-   
    return(nrfx_i2s_init(&_i2s_config, data_handler));
 }
 uint32_t I2SClass::begin(i2s_channels_t channel,uint32_t fs,uint8_t sampleWidth)
@@ -223,21 +206,14 @@ uint32_t I2SClass::begin(i2s_channels_t channel,uint32_t fs,uint8_t sampleWidth)
    _i2s_config.irq_priority = I2S_IRQ_PRIORITY;
    setMode(I2S_Master);
    setPin(I2S_SCK_PIN,I2S_LRCK_PIN,I2S_MCK_PIN,I2S_SDOUT_PIN,I2S_SDIN_PIN);
-   setFrameFormat(FORMAT_I2S);
-   setAlignment(ALIGN_Left);
+   setFrameFormat(FORMAT_I2S );	//FORMAT_ALIGNED
+   setAlignment(ALIGN_Left);	//ALIGN_Right
    setSampleWidth(sampleWidth);
    setChannels(channel);
    setFs(fs);
    _readBuffer.reset();
    _writeBuffer.reset();
-   if(_readBuffer.size()>_writeBuffer.size())
-   {
-    _bufferlength = _readBuffer.size();
-   }
-   else
-   {
-    _bufferlength = _writeBuffer.size();
-   } 
+
    return(nrfx_i2s_init(&_i2s_config, data_handler));
 }
 void I2SClass::start(void)
@@ -246,7 +222,7 @@ void I2SClass::start(void)
               .p_rx_buffer = (uint32_t*)_readBuffer.data(),
               .p_tx_buffer = (uint32_t*)_writeBuffer.data()
             };  
-  nrfx_i2s_start(&initial_buffers,_bufferlength,0);
+  nrfx_i2s_start(&initial_buffers,512,0);
 }
 
 void I2SClass::stop(void)
@@ -255,8 +231,6 @@ void I2SClass::stop(void)
 }
 void I2SClass::end()
 {
-  // _readBuffer.end();
-  // _writeBuffer.end();
   nrfx_i2s_uninit();
 }
 
