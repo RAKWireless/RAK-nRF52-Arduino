@@ -33,6 +33,10 @@ dwt_enable	KEYWORD2
 dwt_disable	KEYWORD2
 delay_ns	KEYWORD2
 
+# RTOS
+rtos_malloc	KEYWORD2
+rtos_free	KEYWORD2
+
 analogOversampling	KEYWORD2
 analogReadVDD	KEYWORD2
 

@@ -19,13 +19,28 @@
 #ifndef _PDM_H_INCLUDED
 #define _PDM_H_INCLUDED
 
+#include <Arduino.h>
+
 #if !defined(ARDUINO_NRF52_ADAFRUIT)
 #error "This library targets only Adafruit NRF52840 boards"
 #endif
 
-#include <Arduino.h>
-#include <Adafruit_TinyUSB.h> // for Serial
 #include "utility/PDMDoubleBuffer.h"
+
+typedef enum PCM_FREQUENCE
+{
+  PCM_1000 = 0,
+  PCM_2000,
+  PCM_4000,
+  PCM_8000,
+  PCM_16000,
+  PCM_22050,
+  PCM_44100,
+  PCM_48000,
+  PCM_100000,   
+  PCM_200000,  
+}PCM_FREQUENCE;
+
 
 class PDMClass
 {
@@ -34,7 +49,7 @@ public:
   virtual ~PDMClass();
 
   void setPins(int dataPin, int clkPin, int pwrPin);
-  int begin(int channels, long sampleRate);
+  int begin(int channels, PCM_FREQUENCE sampleRate);
   void end();
 
   virtual int available();

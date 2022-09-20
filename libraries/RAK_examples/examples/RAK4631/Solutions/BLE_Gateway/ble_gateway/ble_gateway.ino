@@ -44,7 +44,7 @@ bool doOTAA = true;   // OTAA is used by default.
 #define JOINREQ_NBTRIALS 3                                        // < Number of trials for the join request.
 DeviceClass_t g_CurrentClass = CLASS_A;                          // class definition
 LoRaMacRegion_t g_CurrentRegion = LORAMAC_REGION_EU868;    /* Region:EU868*/
-lmh_confirm g_CurrentConfirm = LMH_CONFIRMED_MSG;                // confirm/unconfirm packet definition
+lmh_confirm g_CurrentConfirm = LMH_UNCONFIRMED_MSG;                // confirm/unconfirm packet definition
 uint8_t g_AppPort = LORAWAN_APP_PORT;                            // data port
 
 // Structure containing LoRaWan parameters, needed for lmh_init()
@@ -116,9 +116,6 @@ void setup()
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
 
-    // Initialize LoRa chip.
-    lora_rak4630_init();
-
     // Initialize Serial for debug output
     Serial.begin(115200);
     // Wait for USB Serial to be ready or terminal to be connected
@@ -136,11 +133,14 @@ void setup()
             break;
         }
     }
+    // Initialize LoRa chip.
+    lora_rak4630_init();
+
     Serial.println("=====================================");
     Serial.println("Welcome to RAK4630 LoRaWan!!!");
     if (doOTAA)
     {
-    Serial.println("Type: OTAA");
+      Serial.println("Type: OTAA");
     }
     else
     {
@@ -150,32 +150,32 @@ void setup()
     switch (g_CurrentRegion)
     {
       case LORAMAC_REGION_AS923:
-    Serial.println("Region: AS923");
+        Serial.println("Region: AS923");
         break;
       case LORAMAC_REGION_AU915:
-    Serial.println("Region: AU915");
+        Serial.println("Region: AU915");
         break;
       case LORAMAC_REGION_CN470:
-    Serial.println("Region: CN470");
+        Serial.println("Region: CN470");
         break;
       case LORAMAC_REGION_EU433:
-    Serial.println("Region: EU433");
+        Serial.println("Region: EU433");
         break;
       case LORAMAC_REGION_IN865:
-    Serial.println("Region: IN865");
+        Serial.println("Region: IN865");
         break;
       case LORAMAC_REGION_EU868:
-    Serial.println("Region: EU868");
+        Serial.println("Region: EU868");
         break;
       case LORAMAC_REGION_KR920:
-    Serial.println("Region: KR920");
+        Serial.println("Region: KR920");
         break;
       case LORAMAC_REGION_US915:
-    Serial.println("Region: US915");
+        Serial.println("Region: US915");
         break;
     }
     Serial.println("=====================================");
-
+  
     // Setup the EUIs and Keys
     if (doOTAA)
     {
@@ -194,7 +194,7 @@ void setup()
     uint32_t err_code = lmh_init(&g_lora_callbacks, g_lora_param_init, doOTAA, g_CurrentClass, g_CurrentRegion);
     if (err_code != 0)
     {
-        Serial.printf("lmh_init failed - %d\n", err_code);
+      Serial.printf("lmh_init failed - %d\n", err_code);
       return;
     }
 
