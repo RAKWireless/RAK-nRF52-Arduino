@@ -1,6 +1,11 @@
 
 # RAKwireless WisBlock BSP Changelog
 
+
+## 1.3.0 - 2022.8.25
+
+- Add PDM/I2S and update base to 1.3.0
+
 ## 1.1.0 - 2021.10.08
 
 - All updates from Adafruit nRF52 Arduino Core since V 0.21.20

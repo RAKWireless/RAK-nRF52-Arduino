@@ -149,17 +149,17 @@ extern "C"
 
 	// QSPI Pins
 	// QSPI occupied by GPIO's
-	// #define PIN_QSPI_SCK 3	// 19
-	// #define PIN_QSPI_CS 26	// 17
-	// #define PIN_QSPI_IO0 30 // 20
-	// #define PIN_QSPI_IO1 29 // 21
-	// #define PIN_QSPI_IO2 28 // 22
-	// #define PIN_QSPI_IO3 2	// 23
+	#define PIN_QSPI_SCK 3	// 19
+	#define PIN_QSPI_CS 26	// 17
+	#define PIN_QSPI_IO0 30 // 20
+	#define PIN_QSPI_IO1 29 // 21
+	#define PIN_QSPI_IO2 28 // 22
+	#define PIN_QSPI_IO3 2	// 23
 
 	// On-board QSPI Flash
 	// No onboard flash
-	// #define EXTERNAL_FLASH_DEVICES IS25LP080D
-	// #define EXTERNAL_FLASH_USE_QSPI
+	#define EXTERNAL_FLASH_DEVICES IS25LP080D
+	#define EXTERNAL_FLASH_USE_QSPI
 
 #ifdef __cplusplus
 }

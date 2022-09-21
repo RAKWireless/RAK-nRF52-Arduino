@@ -6,10 +6,13 @@
    @date 2020-12-28
    @copyright Copyright (c) 2020
 **/
-#include <Adafruit_TinyUSB.h>
+
+#include <Wire.h>
 
 void setup()
 {
+	pinMode(WB_IO2, OUTPUT);
+    digitalWrite(WB_IO2, HIGH);
 	time_t timeout = millis();
 	Serial.begin(115200);
 	while (!Serial)
