@@ -31,11 +31,13 @@ begin	KEYWORD2
 stop	KEYWORD2
 end	KEYWORD2
 start	KEYWORD2
+setSize	  KEYWORD2
 write	KEYWORD2
 read	KEYWORD2
 TxIRQCallBack	KEYWORD2
 RxIRQCallBack	KEYWORD2
 setBufferSize	KEYWORD2
+setSampleRate	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)

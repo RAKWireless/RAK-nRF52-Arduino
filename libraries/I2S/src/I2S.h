@@ -51,6 +51,11 @@ typedef enum
     Right = NRF_I2S_CHANNELS_RIGHT   ///< Right only.
 } i2s_channels_t;
 
+typedef enum
+{
+    StereoMode = 2, ///< Stereo.
+    MonoMode = 1   ///< Left only.   
+} channels_t;
 /**
  * @brief I2S alignments of sample within a frame.
  */
@@ -75,6 +80,7 @@ public:
   uint8_t setAlignment(i2s_align_t align);
   uint8_t setSampleWidth(uint8_t width);
   uint8_t setChannels(i2s_channels_t channel);
+  void setSampleRate(int freq);
   bool setFs(uint32_t frequency);
   uint32_t begin(i2s_mode_t mode,i2s_channels_t channel,uint8_t sampleWidth,uint32_t fs);
   uint32_t begin(i2s_mode_t mode);
@@ -82,20 +88,20 @@ public:
   void stop(void);
   void end();
   void start(void);
-
+  void setSize(int size);
   int write(void* buffer, size_t size);
   int read(void* buffer, size_t size);
+  void irqHander(nrfx_i2s_buffers_t const * p_released);
   void TxIRQCallBack(void(*function)(void));
   void RxIRQCallBack(void(*function)(void));
-  void irqHander(nrfx_i2s_buffers_t const * p_released);
+
   private:
     int _sampleWidth = 16;
-    int _bufferlength = 512;
-    nrfx_i2s_config_t _i2s_config;
-  
+ 
+    nrfx_i2s_config_t _i2s_config;  
     I2SDoubleBuffer _readBuffer;
     I2SDoubleBuffer _writeBuffer;  
-    
+   
      void (*_onTxIRQ)(void);
      void (*_onRxIRQ)(void);
 };

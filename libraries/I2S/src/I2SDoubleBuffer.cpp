@@ -3,9 +3,6 @@
 #include "arduino.h"
 #include "I2SDoubleBuffer.h"
 
-
-static uint32_t buffer[2][DEFAULT_I2S_BUFFER_SIZE];
-
 I2SDoubleBuffer::I2SDoubleBuffer() :
   _size(DEFAULT_I2S_BUFFER_SIZE)
 {
@@ -14,6 +11,7 @@ I2SDoubleBuffer::I2SDoubleBuffer() :
 
 I2SDoubleBuffer::~I2SDoubleBuffer()
 {
+  free(_buffer);
 }
 
 void I2SDoubleBuffer::setSize(int size)
@@ -25,16 +23,30 @@ int I2SDoubleBuffer::size(void)
   int size = _size;
   return size;
 }
+// void I2SDoubleBuffer::reset()
+// {
+//   if(!_buffer)
+//   {
+//     free(_buffer);
+//   }
+//   _buffer[0] = (uint8_t*)realloc(_buffer[0], _size);
+//   _buffer[1] = (uint8_t*)realloc(_buffer[1], _size);
+
+//   memset(_buffer[0], 0x00, _size);
+//   memset(_buffer[1], 0x00, _size);
+//   _index = 0;
+// }
 void I2SDoubleBuffer::reset()
 {
-  // _buffer[0] = (uint32_t*)realloc(_buffer[0], _size);
-  // _buffer[1] = (uint32_t*)realloc(_buffer[1], _size);  
+  if(!_buffer)
+  {
+    free(_buffer);
+  }
+  _buffer[0] = (uint32_t*)realloc(_buffer[0], _size*sizeof(uint32_t));
+  _buffer[1] = (uint32_t*)realloc(_buffer[1], _size*sizeof(uint32_t));
 
-  _buffer[0] = buffer[0];
-  _buffer[1] = buffer[1];
-
-  memset(_buffer[0], 0x00, _size);
-  memset(_buffer[1], 0x00, _size);
+  memset(_buffer[0], 0x00, _size*sizeof(uint32_t));
+  memset(_buffer[1], 0x00, _size*sizeof(uint32_t));
   _index = 0;
 }
 size_t I2SDoubleBuffer::write(const void *buffer, size_t size)
@@ -61,14 +73,8 @@ void* I2SDoubleBuffer::data(uint8_t index)
 
 int I2SDoubleBuffer::swap(void)
 {  
-  int num = 0;
-  if (_index == 0) {
-    _index = 1;
-  } else {
-    _index = 0;
-  }
-  num = _index;
-  return num;
+  _index = !_index; 
+  return _index;
 }
 
 void I2SDoubleBuffer::end(void)
