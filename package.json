@@ -1,0 +1,19 @@
+{
+  "name": "framework-arduinoraknrf52",
+  "version": "9.4.0",
+  "description": "Arduino Wiring-based Framework (RAKwireless RAK4631)",
+  "keywords": [
+    "framework",
+    "arduino",
+    "ARM",
+    "Cortex-M",
+    "Nordic Semiconductor",
+    "nRF52",
+    "RAK4631"
+  ],
+  "homepage": "https://docs.rakwireless.com/Product-Categories/WisBlock/RAK4631/Overview",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RAKWireless/RAK-nRF52-Arduino"
+  }
+}
